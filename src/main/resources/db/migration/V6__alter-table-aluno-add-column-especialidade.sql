@@ -1,0 +1,1 @@
+ALTER TABLE alunos ADD especialidade VARCHAR(20) NOT NULL;
