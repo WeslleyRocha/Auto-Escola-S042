@@ -1,5 +1,6 @@
-package br.com.senai.s042.autoescolas042.Instrutor;
+package br.com.senai.s042.autoescolas042.Domain.Instrutor;
 
+import br.com.senai.s042.autoescolas042.Domain.Endereco.Endereco;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,7 +37,7 @@ public class Instrutor {
     private Endereco endereco;
     private Boolean ativo = true;
 
-    public Instrutor(DadosInstrutor dadosInstrutor) {
+    public Instrutor(DadosCadastroInstrutor dadosInstrutor) {
         this.nome = dadosInstrutor.nome();
         this.email = dadosInstrutor.email();
         this.telefone = dadosInstrutor.telefone();
