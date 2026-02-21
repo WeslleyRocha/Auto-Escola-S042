@@ -47,8 +47,8 @@ public class InstrutorController {
     }
     
     @GetMapping
-    public ResponseEntity<Page<DadosListagemInstrutors>>listarInstrutores(
-        @PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
+    public ResponseEntity<Page<DadosListagemInstrutors>> listarInstrutores(
+            @PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
         Page page = instrutorRepository.findAllByAtivoTrue(pageable).map(DadosListagemInstrutors::new);
         return ResponseEntity.ok(page);
     }
