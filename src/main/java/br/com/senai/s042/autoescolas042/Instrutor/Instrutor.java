@@ -34,6 +34,7 @@ public class Instrutor {
 
     @Embedded
     private Endereco endereco;
+    private Boolean ativo = true;
 
     public Instrutor(DadosInstrutor dadosInstrutor) {
         this.nome = dadosInstrutor.nome();
@@ -55,5 +56,9 @@ public class Instrutor {
         } if(dadosAtualizacaoInstrutor.endereco() != null){
             this.endereco.atualizarInformacoes(dadosAtualizacaoInstrutor.endereco());
         }
+    }
+
+    public void excluir(){
+        this.ativo = false;
     }
 }

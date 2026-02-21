@@ -37,7 +37,7 @@ public class InstrutorController {
     
     @GetMapping
     public List<DadosListagemInstrutors> listarInstrutores(){
-        return instrutorRepository.findAll().stream().map(DadosListagemInstrutors::new).toList();
+        return instrutorRepository.findAllByAtivoTrue().stream().map(DadosListagemInstrutors::new).toList();
     }
 
     @PutMapping
@@ -49,9 +49,11 @@ public class InstrutorController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public void excluirInstrutor(@PathVariable Long id){
 
-        instrutorRepository.deleteById(id);
-        System.out.println("Instrutor excluído com sucesso!");
+        Instrutor instrutor = instrutorRepository.getReferenceById(id);
+        instrutor.excluir();
+        instrutorRepository.save(instrutor);
     }
 }
