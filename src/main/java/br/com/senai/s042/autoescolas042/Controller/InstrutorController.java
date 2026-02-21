@@ -1,12 +1,18 @@
 package br.com.senai.s042.autoescolas042.Controller;
 
-import br.com.senai.s042.autoescolas042.Instrutor.DadosAtualizacaoInstrutor;
-import br.com.senai.s042.autoescolas042.Instrutor.DadosInstrutor;
-import br.com.senai.s042.autoescolas042.Instrutor.DadosListagemInstrutors;
-import br.com.senai.s042.autoescolas042.Instrutor.Instrutor;
-import br.com.senai.s042.autoescolas042.Instrutor.InstrutorRepository;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosAtualizacaoInstrutor;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosDetalhamentoInstrutor;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosCadastroInstrutor;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosListagemInstrutors;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.Instrutor;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +21,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/instrutores")
@@ -27,17 +34,29 @@ public class InstrutorController {
 
     @PostMapping
     @Transactional
-    public String cadastrarInstrutor(@RequestBody DadosInstrutor dadosInstrutor) {
+    public ResponseEntity<DadosDetalhamentoInstrutor> cadastrarInstrutor(@RequestBody @Valid
+                                                                         DadosCadastroInstrutor dadosInstrutor,
+                                                                         UriComponentsBuilder uriBuilder) {
+        Instrutor instrutor = new Instrutor(dadosInstrutor);
+        instrutorRepository.save(instrutor);
+        URI uri = uriBuilder.path("/instrutores/{id}")
+                .buildAndExpand(instrutor.getId()).toUri();
 
-        instrutorRepository.save(new Instrutor(dadosInstrutor));
-
-       return "Cadastro realizado com sucesso! :)";
+       return ResponseEntity.created(uri)
+               .body(new DadosDetalhamentoInstrutor(instrutor));
     }
     
-    
     @GetMapping
-    public List<DadosListagemInstrutors> listarInstrutores(){
-        return instrutorRepository.findAllByAtivoTrue().stream().map(DadosListagemInstrutors::new).toList();
+    public ResponseEntity<Page<DadosListagemInstrutors>>listarInstrutores(
+        @PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
+        Page page = instrutorRepository.findAllByAtivoTrue(pageable).map(DadosListagemInstrutors::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoInstrutor> detalharInstrutor(@PathVariable Long id){
+        Instrutor instrutor = instrutorRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoInstrutor(instrutor));
     }
 
     @PutMapping
@@ -50,10 +69,11 @@ public class InstrutorController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluirInstrutor(@PathVariable Long id){
+    public ResponseEntity<Void> excluirInstrutor(@PathVariable Long id){
 
         Instrutor instrutor = instrutorRepository.getReferenceById(id);
         instrutor.excluir();
         instrutorRepository.save(instrutor);
+        return ResponseEntity.noContent().build();
     }
 }
