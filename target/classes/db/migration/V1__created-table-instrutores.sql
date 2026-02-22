@@ -4,6 +4,8 @@ CREATE TABLE instrutores(
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     cnh VARCHAR(11) NOT NULL UNIQUE,
+    telefone VARCHAR(20) NOT NULL,
+    ativo TINYINT NOT NULL DEFAULT 1,
     especialidade VARCHAR(20) NOT NULL,
     logradouro VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,

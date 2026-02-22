@@ -4,6 +4,7 @@ CREATE TABLE alunos(
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     cpf VARCHAR(11) NOT NULL UNIQUE,
+    especialidade VARCHAR(20) NOT NULL,
     telefone VARCHAR(20) NOT NULL,
     logradouro VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
@@ -12,6 +13,7 @@ CREATE TABLE alunos(
     numero VARCHAR(10),
     uf VARCHAR(2) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
+    ativo TINYINT NOT NULL DEFAULT 1,
 
     PRIMARY KEY(id)
 );
