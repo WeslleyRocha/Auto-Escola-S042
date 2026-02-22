@@ -1,35 +1,38 @@
-# 🚀 API de Gerenciamento de Instrutores - TechConsult
+# 🚀 API de Gerenciamento de Instrutores e Alunos - Auto Escola S042
 
-Este projeto é uma API REST desenvolvida para o gerenciamento de instrutores e consultores técnicos, permitindo o cadastro, atualização, listagem e remoção de registros, além de possuir um endpoint de verificação de integridade.
+Este projeto é uma API REST desenvolvida para o gerenciamento de instrutores e alunos de uma autoescola, permitindo o cadastro, atualização, listagem e remoção lógica de registros.
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Java 25** (ou sua versão atual)
+* **Java 25**
 * **Spring Boot 3+**
 * **Maven**
+* **MySQL**
+* **Flyway** (para migração de banco de dados)
 * **Lombok**
-* **Jakarta Validation** (para máscaras de telefone e campos obrigatórios)
+* **Spring Data JPA**
+* **Jakarta Validation**
 
 ---
 
-## 📡 Endpoints da API (Postman/Insomnia)
+## 📡 Endpoints da API
 
 Abaixo estão os exemplos de requisições para cada método disponível na API.
 
-### 1. Verificar Status da API (Health Check)
+### Verificar Status da API (Health Check)
 Verifica se o servidor está rodando corretamente.
 
 * **URL:** `GET http://localhost:8080/health-check`
 * **Resposta esperada:** `200 OK`
 
-### 2. Listar Todos os Instrutores
-Retorna uma lista de todos os instrutores cadastrados.
 
+### 1. Instrutores
+
+#### Listar Todos (Paginação)
 * **URL:** `GET http://localhost:8080/instrutores`
+* **Parâmetros Opcionais:** `page`, `size`, `sort`
 
-### 3. Cadastrar Novo Instrutor
-Cria um novo registro no sistema.
-
+#### Cadastrar Novo Instrutor
 * **URL:** `POST http://localhost:8080/instrutores`
 * **Body (JSON):**
 ```json
@@ -51,12 +54,9 @@ Cria um novo registro no sistema.
 }
 ```
 
-### 4. Atualizar Instrutor Existente
-
-Atualiza parcialmente ou totalmente os dados de um instrutor através do ID.
-
+#### Atualizar Instrutor
 * **URL:** `PUT http://localhost:8080/instrutores`
-
+* **Body (JSON):**
 ```json
 {
   "id": 1,
@@ -74,10 +74,64 @@ Atualiza parcialmente ou totalmente os dados de um instrutor através do ID.
 }
 ```
 
-### 5. Remover Instrutor
+#### Excluir Instrutor (Lógico)
+* **URL:** `DELETE http://localhost:8080/instrutores/{id}`
 
-Exclui um instrutor permanentemente do banco de dados.
+---
 
-* **URL:** `DELETE http://localhost:8080/instrutores/{}`
+### 2. Alunos
 
-* **Parâmetro:** id (Ex: 3)
+#### Listar Todos (Paginação)
+* **URL:** `GET http://localhost:8080/alunos`
+
+#### Cadastrar Novo Aluno
+* **URL:** `POST http://localhost:8080/alunos`
+* **Body (JSON):**
+```json
+{
+  "nome": "João Silva",
+  "email": "joao.silva@email.com",
+  "cpf": "11122233344",
+  "telefone": "(11) 98765-4321",
+  "especialidade": "CARRO",
+  "endereco": {
+    "logradouro": "Rua das Flores",
+    "numero": "123",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "uf": "SP",
+    "cep": "01001000"
+  }
+}
+```
+
+#### Atualizar Aluno
+* **URL:** `PUT http://localhost:8080/alunos`
+* **Body (JSON):**
+```json
+{
+    "id": 1,
+    "nome": "Wes Silva",
+    "telefone": "",
+    "endereco": {
+      "logradouro": "Rua das Flores",
+      "numero": "123",
+      "bairro": "Centro",
+      "cidade": "São Paulo",
+      "uf": "SP",
+      "cep": "01001000"
+    }
+}
+```
+#### Excluir Aluno (Lógico)
+* **URL:** `DELETE http://localhost:8080/alunos/{id}`
+
+---
+
+## 🗄️ Banco de Dados
+
+O projeto utiliza **MySQL** e **Flyway** para gerenciar o esquema do banco de dados.
+As migrações incluem:
+1. Criação da tabela `instrutores`.
+2. Criação da tabela `alunos`.
+3. População inicial de dados para testes nas tabelas `Instrutores` e `Alunos`.
