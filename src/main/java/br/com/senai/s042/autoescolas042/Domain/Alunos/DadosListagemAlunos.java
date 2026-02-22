@@ -7,6 +7,7 @@ public record DadosListagemAlunos(
         String nome,
         String email,
         String cpf,
+        Boolean ativo,
         Especialidade especialidade) {
 
     public DadosListagemAlunos(Aluno aluno) {
@@ -14,6 +15,7 @@ public record DadosListagemAlunos(
                 aluno.getNome(),
                 aluno.getEmail(),
                 aluno.getCpf(),
+                aluno.getAtivo(),
                 aluno.getEspecialidade()
         );
     }
