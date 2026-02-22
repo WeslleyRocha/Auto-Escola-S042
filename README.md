@@ -2,6 +2,14 @@
 
 Este projeto é uma API REST desenvolvida para o gerenciamento de instrutores e alunos de uma autoescola, permitindo o cadastro, atualização, listagem e remoção lógica de registros.
 
+## 🎯 Desafio - Auto Escola
+
+Este projeto foi desenvolvido como parte de um desafio técnico para criar uma solução robusta de gerenciamento para autoescolas. O objetivo é fornecer uma API escalável e bem estruturada para lidar com o fluxo de instrutores e alunos.
+
+[Saiba mais sobre o desafio aqui](https://github.com/wesrocha/Auto-Escola-S042/blob/main/Desafio%20-%20Auto%20Escola.pdf)
+
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 * **Java 25**
@@ -134,4 +142,4 @@ O projeto utiliza **MySQL** e **Flyway** para gerenciar o esquema do banco de da
 As migrações incluem:
 1. Criação da tabela `instrutores`.
 2. Criação da tabela `alunos`.
-3. População inicial de dados para testes nas tabelas `Instrutores` e `Alunos`.
+3. Populando as tabelas `Instrutores` e `Alunos` com dados iniciais de exemplo.
