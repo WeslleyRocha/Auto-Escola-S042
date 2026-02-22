@@ -6,7 +6,7 @@ Este projeto é uma API REST desenvolvida para o gerenciamento de instrutores e 
 
 Este projeto foi desenvolvido como parte de um desafio técnico para criar uma solução robusta de gerenciamento para autoescolas. O objetivo é fornecer uma API escalável e bem estruturada para lidar com o fluxo de instrutores e alunos.
 
-[Saiba mais sobre o desafio aqui](https://github.com/wesrocha/Auto-Escola-S042/blob/main/Desafio%20-%20Auto%20Escola.pdf)
+[Saiba mais sobre o desafio aqui](https://github.com/WeslleyRocha/Auto-Escola-S042/blob/main/src/main/resources/file/Desafio%20-%20Auto-Escola.pdf)
 
 ---
 
