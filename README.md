@@ -1,4 +1,4 @@
-# 🚀 API de Gerenciamento de Instrutores e Alunos - Auto Escola S042
+# 🚀 API de Gerenciamento - Auto Escola S042
 
 Este projeto é uma API REST desenvolvida para o gerenciamento de instrutores e alunos de uma autoescola, permitindo o cadastro, atualização, listagem e remoção lógica de registros.
 
