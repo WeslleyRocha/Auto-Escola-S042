@@ -1,5 +1,6 @@
 package br.com.senai.s042.autoescolas042.Domain.Usuario;
 
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosCadastroInstrutor;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,12 +37,17 @@ public class Usuario implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return "senha";
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return "login";
+        return login;
+    }
+
+    public Usuario(DadosCadastroUsuario dadosUsuario) {
+        this.login = dadosUsuario.login();
+        this.senha = dadosUsuario.senha();
     }
 
     @Override
