@@ -1,6 +1,5 @@
 package br.com.senai.s042.autoescolas042.Domain.Usuario;
 
-import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosCadastroInstrutor;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,6 +49,10 @@ public class Usuario implements UserDetails {
         this.senha = dadosUsuario.senha();
     }
 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -68,5 +71,16 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void atualizarInformacoes(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
+
+        if(dadosAtualizacaoUsuario.login() != null && !dadosAtualizacaoUsuario.login().isBlank()){
+            this.login = dadosAtualizacaoUsuario.login();
+        }
+
+        if(dadosAtualizacaoUsuario.senha() != null && !dadosAtualizacaoUsuario.senha().isBlank()){
+            this.senha = dadosAtualizacaoUsuario.senha();
+        }
     }
 }
