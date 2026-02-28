@@ -1,7 +1,6 @@
-package br.com.senai.s042.autoescolas042.Usuario;
+package br.com.senai.s042.autoescolas042.Domain.AutenticacaoService;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 
 
 public record DadosAutenticacao(

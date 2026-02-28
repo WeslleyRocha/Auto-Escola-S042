@@ -2,8 +2,8 @@ package br.com.senai.s042.autoescolas042.Controller;
 
 import br.com.senai.s042.autoescolas042.Infra.Security.DadosTokenJWT;
 import br.com.senai.s042.autoescolas042.Infra.Security.TokenService;
-import br.com.senai.s042.autoescolas042.Usuario.DadosAutenticacao;
-import br.com.senai.s042.autoescolas042.Usuario.Usuario;
+import br.com.senai.s042.autoescolas042.Domain.AutenticacaoService.DadosAutenticacao;
+import br.com.senai.s042.autoescolas042.Domain.Usuario.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

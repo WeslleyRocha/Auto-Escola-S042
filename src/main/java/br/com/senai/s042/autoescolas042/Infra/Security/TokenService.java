@@ -1,6 +1,6 @@
 package br.com.senai.s042.autoescolas042.Infra.Security;
 
-import br.com.senai.s042.autoescolas042.Usuario.Usuario;
+import br.com.senai.s042.autoescolas042.Domain.Usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

@@ -1,4 +1,4 @@
-package br.com.senai.s042.autoescolas042.Usuario;
+package br.com.senai.s042.autoescolas042.Domain.Usuario;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;

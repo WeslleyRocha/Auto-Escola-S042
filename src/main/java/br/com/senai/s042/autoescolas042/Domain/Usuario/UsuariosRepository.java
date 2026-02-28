@@ -1,4 +1,4 @@
-package br.com.senai.s042.autoescolas042.Usuario;
+package br.com.senai.s042.autoescolas042.Domain.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
