@@ -4,7 +4,7 @@ import br.com.senai.s042.autoescolas042.Domain.Alunos.Aluno;
 import br.com.senai.s042.autoescolas042.Domain.Alunos.AlunoRepository;
 import br.com.senai.s042.autoescolas042.Domain.Alunos.DadosCadastroAluno;
 import br.com.senai.s042.autoescolas042.Domain.Alunos.DadosAtualizacaoAlunos;
-import br.com.senai.s042.autoescolas042.Domain.Alunos.DadosListagemAlunos;
+import br.com.senai.s042.autoescolas042.Domain.Alunos.DadosDetalhamentoAlunos;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
 
 @RestController
 @RequestMapping("/alunos")
@@ -38,15 +36,18 @@ public class AlunoController {
         return "Cadastro realizado com sucesso! :)";
     }
 
-
     @GetMapping
-    public ResponseEntity<Page<DadosListagemAlunos>> listarAlunos(
+    public ResponseEntity<Page<DadosDetalhamentoAlunos>> listarAlunos(
             @PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
-        Page page = alunoRepository.findAllByAtivoTrue(pageable).map(DadosListagemAlunos::new);
+        Page page = alunoRepository.findAllByAtivoTrue(pageable).map(DadosDetalhamentoAlunos::new);
         return ResponseEntity.ok(page);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity <DadosDetalhamentoAlunos> detalharAlunos(@PathVariable Long id){
+        Aluno aluno = alunoRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoAlunos(aluno));
+    }
 
     @PutMapping
     @Transactional
@@ -54,7 +55,6 @@ public class AlunoController {
         Aluno aluno = alunoRepository.getReferenceById(Long.valueOf(dadosAtualizacaoAlunos.id()));
         aluno.atualizarInformacoes(dadosAtualizacaoAlunos);
         alunoRepository.save(aluno);
-
     }
 
     @DeleteMapping("/{id}")
