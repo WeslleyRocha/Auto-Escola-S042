@@ -20,6 +20,8 @@ Este projeto foi desenvolvido como parte de um desafio técnico para criar uma s
 * **Lombok**
 * **Spring Data JPA**
 * **Jakarta Validation**
+* **Spring Security**
+* **JWT (JSON Web Token)**
 
 ---
 
@@ -33,18 +35,107 @@ Verifica se o servidor está rodando corretamente.
 * **URL:** `GET http://localhost:8080/health-check`
 * **Resposta esperada:** `200 OK`
 
+---
 
-### 1. Instrutores
+### 🔐 Autenticação
+
+Para acessar os endpoints protegidos, é necessário obter um token JWT.
+
+#### Login
+* **URL:** `POST http://localhost:8080/login`
+* **cURL:**
+```bash
+curl -X POST http://localhost:8080/login \
+-H "Content-Type: application/json" \
+-d '{
+  "login": "admin",
+  "senha": "123"
+}'
+```
+
+---
+
+### 1. Usuários
+
+#### Listar Todos (Paginação)
+* **URL:** `GET http://localhost:8080/usuarios`
+* **cURL:**
+```bash
+curl -X GET "http://localhost:8080/usuarios?page=0&size=10&sort=login,asc" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
+
+#### Detalhar Usuário
+* **URL:** `GET http://localhost:8080/usuarios/{id}`
+* **cURL:**
+```bash
+curl -X GET http://localhost:8080/usuarios/1 \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
+
+#### Cadastrar Novo Usuário
+* **URL:** `POST http://localhost:8080/usuarios`
+* **cURL:**
+```bash
+curl -X POST http://localhost:8080/usuarios \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI" \
+-d '{
+  "login": "novo.usuario",
+  "senha": "senhaSegura123"
+}'
+```
+
+#### Atualizar Usuário
+* **URL:** `PUT http://localhost:8080/usuarios`
+* **cURL:**
+```bash
+curl -X PUT http://localhost:8080/usuarios \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI" \
+-d '{
+  "id": 1,
+  "login": "usuario.atualizado",
+  "senha": "novaSenha123"
+}'
+```
+
+#### Excluir Usuário (Lógico)
+* **URL:** `DELETE http://localhost:8080/usuarios/{id}`
+* **cURL:**
+```bash
+curl -X DELETE http://localhost:8080/usuarios/1 \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
+
+---
+
+### 2. Instrutores
 
 #### Listar Todos (Paginação)
 * **URL:** `GET http://localhost:8080/instrutores`
-* **Parâmetros Opcionais:** `page`, `size`, `sort`
+* **cURL:**
+```bash
+curl -X GET "http://localhost:8080/instrutores?page=0&size=10&sort=nome,asc" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
+
+#### Detalhar Instrutor
+* **URL:** `GET http://localhost:8080/instrutores/{id}`
+* **cURL:**
+```bash
+curl -X GET http://localhost:8080/instrutores/1 \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
 
 #### Cadastrar Novo Instrutor
 * **URL:** `POST http://localhost:8080/instrutores`
-* **Body (JSON):**
-```json
-{
+* **cURL:**
+```bash
+curl -X POST http://localhost:8080/instrutores \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI" \
+-d '{
   "nome": "Michael Silva",
   "email": "michael.silva@provedor.com",
   "cnh": "32165498900",
@@ -59,14 +150,17 @@ Verifica se o servidor está rodando corretamente.
     "uf": "MG",
     "cep": "30150331"
   }
-}
+}'
 ```
 
 #### Atualizar Instrutor
 * **URL:** `PUT http://localhost:8080/instrutores`
-* **Body (JSON):**
-```json
-{
+* **cURL:**
+```bash
+curl -X PUT http://localhost:8080/instrutores \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI" \
+-d '{
   "id": 1,
   "nome": "Michael Silva Editado",
   "telefone": "(11)12345-2222",
@@ -79,24 +173,45 @@ Verifica se o servidor está rodando corretamente.
     "uf": "MG",
     "cep": "30150331"
   }
-}
+}'
 ```
 
 #### Excluir Instrutor (Lógico)
 * **URL:** `DELETE http://localhost:8080/instrutores/{id}`
+* **cURL:**
+```bash
+curl -X DELETE http://localhost:8080/instrutores/1 \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
 
 ---
 
-### 2. Alunos
+### 3. Alunos
 
 #### Listar Todos (Paginação)
 * **URL:** `GET http://localhost:8080/alunos`
+* **cURL:**
+```bash
+curl -X GET "http://localhost:8080/alunos?page=0&size=10&sort=nome,asc" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
+
+#### Detalhar Aluno
+* **URL:** `GET http://localhost:8080/alunos/{id}`
+* **cURL:**
+```bash
+curl -X GET http://localhost:8080/alunos/1 \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
 
 #### Cadastrar Novo Aluno
 * **URL:** `POST http://localhost:8080/alunos`
-* **Body (JSON):**
-```json
-{
+* **cURL:**
+```bash
+curl -X POST http://localhost:8080/alunos \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI" \
+-d '{
   "nome": "João Silva",
   "email": "joao.silva@email.com",
   "cpf": "11122233344",
@@ -110,17 +225,20 @@ Verifica se o servidor está rodando corretamente.
     "uf": "SP",
     "cep": "01001000"
   }
-}
+}'
 ```
 
 #### Atualizar Aluno
 * **URL:** `PUT http://localhost:8080/alunos`
-* **Body (JSON):**
-```json
-{
+* **cURL:**
+```bash
+curl -X PUT http://localhost:8080/alunos \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer SEU_TOKEN_AQUI" \
+-d '{
     "id": 1,
     "nome": "Wes Silva",
-    "telefone": "",
+    "telefone": "(11) 99999-8888",
     "endereco": {
       "logradouro": "Rua das Flores",
       "numero": "123",
@@ -129,10 +247,16 @@ Verifica se o servidor está rodando corretamente.
       "uf": "SP",
       "cep": "01001000"
     }
-}
+}'
 ```
+
 #### Excluir Aluno (Lógico)
 * **URL:** `DELETE http://localhost:8080/alunos/{id}`
+* **cURL:**
+```bash
+curl -X DELETE http://localhost:8080/alunos/1 \
+-H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
 
 ---
 
@@ -142,4 +266,5 @@ O projeto utiliza **MySQL** e **Flyway** para gerenciar o esquema do banco de da
 As migrações incluem:
 1. Criação da tabela `instrutores`.
 2. Criação da tabela `alunos`.
-3. Populando as tabelas `Instrutores` e `Alunos` com dados iniciais de exemplo.
+3. Criação da tabela `usuarios`.
+4. Populando as tabelas `Instrutores`, `Alunos` e `Usuarios` com dados iniciais de exemplo.
