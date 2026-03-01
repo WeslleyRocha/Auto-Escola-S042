@@ -2,7 +2,8 @@ CREATE TABLE usuarios (
 
        id BIGINT NOT NULL AUTO_INCREMENT,
        login VARCHAR(50) NOT NULL UNIQUE,
-       senha VARCHAR(50) NOT NULL,
+       senha VARCHAR(150) NOT NULL,
+       ativo TINYINT NOT NULL DEFAULT 1,
 
     PRIMARY KEY(id)
 );
