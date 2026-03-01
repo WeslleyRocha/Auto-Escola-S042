@@ -28,6 +28,7 @@ public class Usuario implements UserDetails {
     private Long id;
     private String login;
     private String senha;
+    private Boolean ativo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -38,7 +38,7 @@ public class UsuarioController {
     public ResponseEntity<Page<DadosListagemUsuarios>> listarUsuarios(
             @PageableDefault(size = 10, sort = {"login"}) Pageable pageable){
 
-        Page page = usuariosRepository.findAll(pageable).map(DadosListagemUsuarios::new);
+        Page page = usuariosRepository.findAllByAtivoTrue(pageable).map(DadosListagemUsuarios::new);
         return ResponseEntity.ok(page);
     }
 
