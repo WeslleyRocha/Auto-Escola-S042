@@ -48,6 +48,7 @@ public class Usuario implements UserDetails {
     public Usuario(DadosCadastroUsuario dadosUsuario) {
         this.login = dadosUsuario.login();
         this.senha = dadosUsuario.senha();
+        this.ativo = true;
     }
 
     public void setSenha(String senha) {

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,13 @@ public class UsuarioController {
 
         Page page = usuariosRepository.findAllByAtivoTrue(pageable).map(DadosListagemUsuarios::new);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoUsuario> detalharUsuario(@PathVariable Long id){
+        Usuario usuario = usuariosRepository.getReferenceById(id);
+
+        return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
 
     @PostMapping
