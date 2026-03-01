@@ -85,4 +85,8 @@ public class Usuario implements UserDetails {
             this.senha = dadosAtualizacaoUsuario.senha();
         }
     }
+
+    public void excluir() {
+        this.ativo = false;
+    }
 }

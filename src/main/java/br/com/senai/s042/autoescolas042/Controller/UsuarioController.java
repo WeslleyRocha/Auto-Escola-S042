@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,5 +77,16 @@ public class UsuarioController {
 
         usuario.atualizarInformacoes(dadosAtualizacaoUsuario);
         usuariosRepository.save(usuario);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> excluirUsuario(@PathVariable Long id){
+
+        Usuario usuario = usuariosRepository.getReferenceById(id);
+        usuario.excluir();
+
+        usuariosRepository.save(usuario);
+        return ResponseEntity.noContent().build();
     }
 }
