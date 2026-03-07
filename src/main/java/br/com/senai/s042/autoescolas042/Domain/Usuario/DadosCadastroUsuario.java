@@ -1,6 +1,7 @@
 package br.com.senai.s042.autoescolas042.Domain.Usuario;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record DadosCadastroUsuario(
 
@@ -8,5 +9,8 @@ public record DadosCadastroUsuario(
         String login,
 
         @NotBlank
-        String senha) {
+        String senha,
+
+        @NotNull
+        Role perfil) {
 }

@@ -4,7 +4,8 @@ public record DadosDetalhamentoUsuario(
         Long id,
         String login,
         String senha,
-        Boolean ativo
+        Boolean ativo,
+        Role perfil
 ) {
 
     public DadosDetalhamentoUsuario(Usuario usuario){
@@ -13,7 +14,8 @@ public record DadosDetalhamentoUsuario(
                 usuario.getId(),
                 usuario.getLogin(),
                 usuario.getSenha(),
-                usuario.getAtivo()
+                usuario.getAtivo(),
+                usuario.getPerfil()
         );
     }
 }

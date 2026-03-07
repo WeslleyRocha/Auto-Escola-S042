@@ -4,6 +4,7 @@ CREATE TABLE usuarios (
        login VARCHAR(50) NOT NULL UNIQUE,
        senha VARCHAR(150) NOT NULL,
        ativo TINYINT NOT NULL DEFAULT 1,
+       perfil VARCHAR (15) NOT NULL DEFAULT "USER",
 
     PRIMARY KEY(id)
 );

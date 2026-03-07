@@ -2,10 +2,13 @@ package br.com.senai.s042.autoescolas042.Domain.Usuario;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +23,7 @@ import java.util.List;
 @Table(name = "usuarios")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
 
@@ -30,9 +34,12 @@ public class Usuario implements UserDetails {
     private String senha;
     private Boolean ativo;
 
+    @Enumerated(EnumType.STRING)
+    private Role perfil;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + perfil.name()));
     }
 
     @Override
@@ -49,6 +56,7 @@ public class Usuario implements UserDetails {
         this.login = dadosUsuario.login();
         this.senha = dadosUsuario.senha();
         this.ativo = true;
+        this.perfil = dadosUsuario.perfil();
     }
 
     public void setSenha(String senha) {
@@ -83,6 +91,10 @@ public class Usuario implements UserDetails {
 
         if(dadosAtualizacaoUsuario.senha() != null && !dadosAtualizacaoUsuario.senha().isBlank()){
             this.senha = dadosAtualizacaoUsuario.senha();
+        }
+
+        if(dadosAtualizacaoUsuario.perfil() != null){
+            this.perfil = dadosAtualizacaoUsuario.perfil();
         }
     }
 
