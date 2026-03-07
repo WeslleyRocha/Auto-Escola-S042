@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ public class UsuarioController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Page<DadosListagemUsuarios>> listarUsuarios(
             @PageableDefault(size = 10, sort = {"login"}) Pageable pageable){
 
@@ -45,6 +47,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DadosDetalhamentoUsuario> detalharUsuario(@PathVariable Long id){
         Usuario usuario = usuariosRepository.getReferenceById(id);
 
@@ -53,14 +56,23 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<DadosDetalhamentoUsuario> cadastrarUsuarios(
             @RequestBody
             @Valid
             DadosCadastroUsuario dadosUsuario,
             UriComponentsBuilder uriBuilder) {
 
-        Usuario usuario = new Usuario(dadosUsuario);
-        usuario.setSenha(passwordEncoder.encode(dadosUsuario.senha()));
+        String senhaCriptografada = passwordEncoder.encode(dadosUsuario.senha());
+
+        Usuario usuario = new Usuario(
+                null,
+                dadosUsuario.login(),
+                senhaCriptografada,
+                true,
+                dadosUsuario.perfil()
+        );
+
         usuariosRepository.save(usuario);
 
         URI uri = uriBuilder.path("/usuarios/{id}")
@@ -72,6 +84,7 @@ public class UsuarioController {
 
     @PutMapping
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void atualizarUsuarios(@RequestBody DadosAtualizacaoUsuario dadosAtualizacaoUsuario){
         Usuario usuario = usuariosRepository.getReferenceById(Long.valueOf(dadosAtualizacaoUsuario.id()));
 
