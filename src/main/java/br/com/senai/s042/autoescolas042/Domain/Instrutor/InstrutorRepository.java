@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDateTime;
 
 public interface InstrutorRepository extends JpaRepository<Instrutor, Long> {
+
     Page<Instrutor> findAllByAtivoTrue(Pageable pageable);
 
     @Query(""" 
@@ -25,4 +26,12 @@ public interface InstrutorRepository extends JpaRepository<Instrutor, Long> {
 
 """)
     Instrutor escolherInstrutorAleatorioDisponivel(Especialidade especialidade, @NotNull @Future LocalDateTime data);
+
+    @Query("""
+    SELECT i.ativo
+    FROM Instrutor i
+    WHERE
+    i.id =:id
+""")
+    Boolean findArivoById(Long id);
 }

@@ -24,7 +24,7 @@ public class ValidadorHorarioFuncionamento implements ValidadorAgendamento {
         Boolean posFechamento = dataAgendamento.getHour() > horarioFechamento;
 
         if(domingo || preAbertura || posFechamento){
-            throw new ValidacaoException("Tenttiva de agendamento fora do horario de funcionado (Domingo)! ");
+            throw new ValidacaoException("Tentiva de agendamento fora do horario de funcionado! ");
         }
     }
 }

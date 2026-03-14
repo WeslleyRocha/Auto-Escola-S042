@@ -27,6 +27,12 @@ public class TratadorGlobalDeExcecoes {
         return ResponseEntity.badRequest().body(fieldErrors.stream().map(DadosBadRequest::new).toList());
     }
 
+    @ExceptionHandler(InstrutorNaoExisteException.class)
+    public ResponseEntity<String> tratarInstrutorNaoExisteException(AlunoNaoExisteException ex){
+
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     @ExceptionHandler(AlunoNaoExisteException.class)
     public ResponseEntity tratarAlunoNaoExisteException(AlunoNaoExisteException ex){
 
