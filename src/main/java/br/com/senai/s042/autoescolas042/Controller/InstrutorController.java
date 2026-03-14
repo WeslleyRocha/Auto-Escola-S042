@@ -5,7 +5,6 @@ import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosDetalhamentoInstru
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosCadastroInstrutor;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosListagemInstrutors;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +69,6 @@ public class InstrutorController {
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<Void> excluirInstrutor(@PathVariable Long id){
 
        instrutorService.excluir(id);
