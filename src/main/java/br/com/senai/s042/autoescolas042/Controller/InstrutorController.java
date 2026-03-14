@@ -4,8 +4,7 @@ import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosAtualizacaoInstrut
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosDetalhamentoInstrutor;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosCadastroInstrutor;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.DadosListagemInstrutors;
-import br.com.senai.s042.autoescolas042.Domain.Instrutor.Instrutor;
-import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorRepository;
+import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -28,54 +27,53 @@ import java.net.URI;
 @RequestMapping("/instrutores")
 public class InstrutorController {
 
-    private final InstrutorRepository instrutorRepository;
+    private final InstrutorService instrutorService;
 
-    public InstrutorController(InstrutorRepository instrutorRepository) {
-        this.instrutorRepository = instrutorRepository;
+    public InstrutorController(InstrutorService instrutorService) {
+        this.instrutorService = instrutorService;
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<DadosDetalhamentoInstrutor> cadastrarInstrutor(@RequestBody @Valid
                                                                          DadosCadastroInstrutor dadosInstrutor,
                                                                          UriComponentsBuilder uriBuilder) {
-        Instrutor instrutor = new Instrutor(dadosInstrutor);
-        instrutorRepository.save(instrutor);
-        URI uri = uriBuilder.path("/instrutores/{id}")
-                .buildAndExpand(instrutor.getId()).toUri();
 
-       return ResponseEntity.created(uri)
-               .body(new DadosDetalhamentoInstrutor(instrutor));
+        DadosDetalhamentoInstrutor dto = instrutorService.cadastrar(dadosInstrutor);
+
+        URI uri = uriBuilder.path("/instrutores/{id}").buildAndExpand(dto.id()).toUri();
+
+       return ResponseEntity.created(uri).body(dto);
     }
     
     @GetMapping
     public ResponseEntity<Page<DadosListagemInstrutors>> listarInstrutores(
             @PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
-        Page page = instrutorRepository.findAllByAtivoTrue(pageable).map(DadosListagemInstrutors::new);
-        return ResponseEntity.ok(page);
+
+        return ResponseEntity.ok(instrutorService.listar(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoInstrutor> detalharInstrutor(@PathVariable Long id){
-        Instrutor instrutor = instrutorRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DadosDetalhamentoInstrutor(instrutor));
+
+        DadosDetalhamentoInstrutor dto = instrutorService.detalhar(id);
+
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping
-    @Transactional
-    public void atualizarInstrutor(@RequestBody DadosAtualizacaoInstrutor dadosAtualizacaoInstrutor){
-        Instrutor instrutor = instrutorRepository.getReferenceById(Long.valueOf(dadosAtualizacaoInstrutor.id()));
-        instrutor.atualizarInformacoes(dadosAtualizacaoInstrutor);
-        instrutorRepository.save(instrutor);
+    public ResponseEntity<DadosDetalhamentoInstrutor> atualizarInstrutor(
+            @RequestBody DadosAtualizacaoInstrutor dadosAtualizacaoInstrutor){
+
+        DadosDetalhamentoInstrutor dto = instrutorService.atualizar(dadosAtualizacaoInstrutor);
+
+      return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> excluirInstrutor(@PathVariable Long id){
 
-        Instrutor instrutor = instrutorRepository.getReferenceById(id);
-        instrutor.excluir();
-        instrutorRepository.save(instrutor);
+       instrutorService.excluir(id);
         return ResponseEntity.noContent().build();
     }
 }
