@@ -8,7 +8,6 @@ import br.com.senai.s042.autoescolas042.Domain.Instrutor.Instrutor;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,8 +28,11 @@ import java.net.URI;
 @RequestMapping("/instrutores")
 public class InstrutorController {
 
-    @Autowired
-    private InstrutorRepository instrutorRepository;
+    private final InstrutorRepository instrutorRepository;
+
+    public InstrutorController(InstrutorRepository instrutorRepository) {
+        this.instrutorRepository = instrutorRepository;
+    }
 
     @PostMapping
     @Transactional

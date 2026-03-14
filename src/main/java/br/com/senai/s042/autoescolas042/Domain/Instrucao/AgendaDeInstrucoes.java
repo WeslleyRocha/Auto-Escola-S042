@@ -8,25 +8,28 @@ import br.com.senai.s042.autoescolas042.Domain.Instrutor.Instrutor;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorNaoExisteException;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class AgendaDeInstrucoes {
+    
+    private final InstrucaoRepository instrucaoRepository;
+    private final AlunoRepository alunoRepository;
+    private final InstrutorRepository instrutorRepository;
+    private final List<ValidadorAgendamento> validadoresAgentamento;
 
-    @Autowired
-    private InstrucaoRepository instrucaoRepository;
-
-    @Autowired
-    private AlunoRepository alunoRepository;
-
-    @Autowired
-    private InstrutorRepository instrutorRepository;
-
-    @Autowired
-    private List<ValidadorAgendamento> validadoresAgentamento;
+    public AgendaDeInstrucoes (InstrucaoRepository instrucaoRepository, 
+                               AlunoRepository alunoRepository,
+                               InstrutorRepository instrutorRepository, 
+                               List<ValidadorAgendamento> validadoresAgentamento){
+        this.instrucaoRepository = instrucaoRepository;
+        this.alunoRepository = alunoRepository;
+        this.instrutorRepository = instrutorRepository;
+        this.validadoresAgentamento = validadoresAgentamento;
+    }
+    
 
     @Transactional
     public DadosDetalhamentoInstrucao agendarInstrucao(DadosAgendamentoInstrucao dadosAgendamentoInstrucao){
@@ -48,6 +51,11 @@ public class AgendaDeInstrucoes {
         Aluno aluno = alunoRepository.getReferenceById(dadosAgendamentoInstrucao.idAluno());
 
         Instrutor instrutor = escolherInstrutor(dadosAgendamentoInstrucao);
+
+        if (instrutor ==  null){
+            throw new InstrutorIndisponivelException("Não há instrutor disponivel para agemdamento! ");
+
+        }
 
         Instrucao instrucao = new Instrucao(
                 null,
