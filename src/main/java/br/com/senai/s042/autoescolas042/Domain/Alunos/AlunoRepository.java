@@ -16,5 +16,5 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     WHERE
     i.id = id
 """)
-    Boolean findArivoById(@NotNull Long id);
+    Boolean findAtivoById(@NotNull Long id);
 }
