@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class InstrutorController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<DadosDetalhamentoInstrutor> cadastrarInstrutor(@RequestBody @Valid
                                                                          DadosCadastroInstrutor dadosInstrutor,
                                                                          UriComponentsBuilder uriBuilder) {
@@ -45,6 +47,7 @@ public class InstrutorController {
     }
     
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Page<DadosListagemInstrutors>> listarInstrutores(
             @PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
 
@@ -52,6 +55,7 @@ public class InstrutorController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<DadosDetalhamentoInstrutor> detalharInstrutor(@PathVariable Long id){
 
         DadosDetalhamentoInstrutor dto = instrutorService.detalhar(id);
@@ -60,6 +64,7 @@ public class InstrutorController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<DadosDetalhamentoInstrutor> atualizarInstrutor(
             @RequestBody DadosAtualizacaoInstrutor dadosAtualizacaoInstrutor){
 
@@ -69,6 +74,7 @@ public class InstrutorController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Void> excluirInstrutor(@PathVariable Long id){
 
        instrutorService.excluir(id);
