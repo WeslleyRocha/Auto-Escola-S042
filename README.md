@@ -49,7 +49,7 @@ curl -X POST http://localhost:8080/login \
 -H "Content-Type: application/json" \
 -d '{
   "login": "admin",
-  "senha": "123"
+  "senha": "admin"
 }'
 ```
 
@@ -306,5 +306,5 @@ As migrações incluem:
 1. Criação da tabela `instrutores`.
 2. Criação da tabela `alunos`.
 3. Criação da tabela `usuarios`.
-4. Criação da tabela `instrucoes` (agendamento).
+4. Criação da tabela `instrucoes (agendamento)`.
 5. Populando as tabelas `Instrutores`, `Alunos`, `Usuarios` e `Agendamento` com dados iniciais de exemplo.
