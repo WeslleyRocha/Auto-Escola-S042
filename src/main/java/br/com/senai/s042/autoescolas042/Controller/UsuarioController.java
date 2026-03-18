@@ -38,7 +38,7 @@ public class UsuarioController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Page<DadosListagemUsuarios>> listarUsuarios(
             @PageableDefault(size = 10, sort = {"login"}) Pageable pageable){
 
@@ -47,7 +47,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<DadosDetalhamentoUsuario> detalharUsuario(@PathVariable Long id){
         Usuario usuario = usuariosRepository.getReferenceById(id);
 
@@ -84,7 +84,7 @@ public class UsuarioController {
 
     @PutMapping
     @Transactional
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void atualizarUsuarios(@RequestBody DadosAtualizacaoUsuario dadosAtualizacaoUsuario){
         Usuario usuario = usuariosRepository.getReferenceById(Long.valueOf(dadosAtualizacaoUsuario.id()));
 
@@ -94,6 +94,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Void> excluirUsuario(@PathVariable Long id){
 
         Usuario usuario = usuariosRepository.getReferenceById(id);
