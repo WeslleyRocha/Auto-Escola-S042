@@ -5,6 +5,8 @@ CREATE TABLE instrucoes
     aluno_id      BIGINT      NOT NULL,
     instrutor_id  BIGINT      NOT NULL,
     data          DATETIME    NOT NULL,
+    ativo         TINYINT     NOT NULL DEFAULT 1,
+    motivo        VARCHAR(25),
 
     PRIMARY KEY (id),
     CONSTRAINT fk_instrucao_aluno_id FOREIGN KEY (aluno_id) REFERENCES alunos (id),

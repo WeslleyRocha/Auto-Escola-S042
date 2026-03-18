@@ -1,9 +1,9 @@
 package br.com.senai.s042.autoescolas042.Domain.Instrucao;
 
 import br.com.senai.s042.autoescolas042.Domain.Alunos.Aluno;
-import br.com.senai.s042.autoescolas042.Domain.Instrutor.Especialidade;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.Instrutor;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +39,15 @@ public class Instrucao {
     @JoinColumn(name = "instrutor_id")
     private Instrutor instrutor;
 
-//    @Enumerated
-//    private Especialidade especialidade;
-   private LocalDateTime data;
+    private LocalDateTime data;
+
+    private Boolean ativo;
+
+    @Enumerated(EnumType.STRING)
+    private Motivo motivo;
+
+    public void cancelar(Motivo motivo) {
+        this.ativo = false;
+        this.motivo = motivo;
+    }
 }

@@ -4,6 +4,7 @@ import br.com.senai.s042.autoescolas042.Domain.Alunos.Aluno;
 import br.com.senai.s042.autoescolas042.Domain.Alunos.AlunoNaoExisteException;
 import br.com.senai.s042.autoescolas042.Domain.Alunos.AlunoRepository;
 import br.com.senai.s042.autoescolas042.Domain.Instrucao.Validacoes.ValidadorAgendamento;
+import br.com.senai.s042.autoescolas042.Domain.Instrucao.Validacoes.ValidadorCancelamentoDeInstrucao;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.Instrutor;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorNaoExisteException;
 import br.com.senai.s042.autoescolas042.Domain.Instrutor.InstrutorRepository;
@@ -19,15 +20,18 @@ public class AgendaDeInstrucoes {
     private final AlunoRepository alunoRepository;
     private final InstrutorRepository instrutorRepository;
     private final List<ValidadorAgendamento> validadoresAgentamento;
+    private final List<ValidadorCancelamentoDeInstrucao> validadoresCancelamento;
 
     public AgendaDeInstrucoes (InstrucaoRepository instrucaoRepository, 
                                AlunoRepository alunoRepository,
                                InstrutorRepository instrutorRepository, 
-                               List<ValidadorAgendamento> validadoresAgentamento){
+                               List<ValidadorAgendamento> validadoresAgentamento,
+                               List<ValidadorCancelamentoDeInstrucao> validadoresCancelamento){
         this.instrucaoRepository = instrucaoRepository;
         this.alunoRepository = alunoRepository;
         this.instrutorRepository = instrutorRepository;
         this.validadoresAgentamento = validadoresAgentamento;
+        this.validadoresCancelamento = validadoresCancelamento;
     }
     
 
@@ -61,7 +65,9 @@ public class AgendaDeInstrucoes {
                 null,
                 aluno,
                 instrutor,
-                dadosAgendamentoInstrucao.data()
+                dadosAgendamentoInstrucao.data(),
+                true,
+                null
         );
 
         instrucaoRepository.save(instrucao);
@@ -82,5 +88,17 @@ public class AgendaDeInstrucoes {
         }
 
         return instrutorRepository.escolherInstrutorAleatorioDisponivel(dadosAgendamentoInstrucao.especialidade(),dadosAgendamentoInstrucao.data());
+    }
+
+    @Transactional
+    public void cancelarInstrucao(DadosCancelamentoInstrucao dadosCancelamento) {
+        if (!instrucaoRepository.existsById(dadosCancelamento.idInstrucao())) {
+            throw new RuntimeException("Id da instrução não encontrado!");
+        }
+
+        validadoresCancelamento.forEach(v -> v.validar(dadosCancelamento));
+
+        var instrucao = instrucaoRepository.getReferenceById(dadosCancelamento.idInstrucao());
+        instrucao.cancelar(dadosCancelamento.motivo());
     }
 }
