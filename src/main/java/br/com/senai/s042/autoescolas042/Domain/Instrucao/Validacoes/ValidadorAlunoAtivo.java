@@ -14,7 +14,7 @@ public class ValidadorAlunoAtivo implements ValidadorAgendamento {
     @Override
     public void validar(DadosAgendamentoInstrucao dadosAgendamentoInstrucao) {
 
-        Boolean alunoAtivo = alunoRepository.findArivoById(dadosAgendamentoInstrucao.idAluno());
+        Boolean alunoAtivo = alunoRepository.findAtivoById(dadosAgendamentoInstrucao.idAluno());
 
         if (!alunoAtivo){
             throw new ValidacaoException("Agendamento não pode ser realizado com o Aluno inativo!");

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 
@@ -30,8 +31,7 @@ public interface InstrutorRepository extends JpaRepository<Instrutor, Long> {
     @Query("""
     SELECT i.ativo
     FROM Instrutor i
-    WHERE
-    i.id =:id
+    WHERE i.id = :id
 """)
-    Boolean findArivoById(Long id);
+    Boolean findArivoById(@Param("id") Long id);
 }
