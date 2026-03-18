@@ -12,7 +12,10 @@ public record DadosDetalhamentoInstrucao(
         Especialidade especialidade,
 
         @JsonFormat(pattern = "dd/MM/yyyy - HH:mm")
-        LocalDateTime data) {
+        LocalDateTime data,
+
+        Boolean ativo,
+        Motivo motivo) {
 
     public DadosDetalhamentoInstrucao(Instrucao instrucao) {
 
@@ -21,7 +24,9 @@ public record DadosDetalhamentoInstrucao(
                 instrucao.getAluno().getNome(),
                 instrucao.getInstrutor().getNome(),
                 instrucao.getInstrutor().getEspecialidade(),
-                instrucao.getData()
+                instrucao.getData(),
+                instrucao.getAtivo(),
+                instrucao.getMotivo()
         );
     }
 }
