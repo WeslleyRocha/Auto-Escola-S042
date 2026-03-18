@@ -260,6 +260,45 @@ curl -X DELETE http://localhost:8080/alunos/1 \
 
 ---
 
+### 4. Instruções (Agendamento)
+
+#### Listar Toos os Agendamentos
+* **URL:** `GET http://localhost:8080/instrucao`
+* **cURL:**
+```bash
+curl -X GET 'http://localhost:8080/instrucao' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBcGkgQXV0byBFc2NvbGEgUzA0MiIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzczODYyMDg0fQ.s9WvJyotsClQ9JgGNEBdtdi-nMawWO433NBz78lusI4'
+```
+
+#### Agendar Nova Instrução
+* **URL:** `POST http://localhost:8080/instrucao`
+* **cURL:**
+```bash
+curl -X POST 'http://localhost:8080/instrucao' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBcGkgQXV0byBFc2NvbGEgUzA0MiIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzczODU4NTU1fQ.Z9OftwErJNZPxccrqNz52Q6IATBCqH9ULoT5nkxLxWQ' \
+-d '{
+  "idAluno": 9,
+  "idInstrutor": 6,
+  "data": "20/03/2026 - 13:00"
+}'
+```
+
+#### Cancelar Instrução
+* **URL:** `DELETE http://localhost:8080/instrucao`
+* **cURL:**
+```bash
+curl -X DELETE 'http://localhost:8080/instrucao' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBcGkgQXV0byBFc2NvbGEgUzA0MiIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzczODU4NTU1fQ.Z9OftwErJNZPxccrqNz52Q6IATBCqH9ULoT5nkxLxWQ' \
+-d '{
+  "idInstrucao": 2,
+  "motivo": "ALUNO_DESISTIU"
+}'
+```
+
+---
+
 ## 🗄️ Banco de Dados
 
 O projeto utiliza **MySQL** e **Flyway** para gerenciar o esquema do banco de dados.
@@ -267,4 +306,5 @@ As migrações incluem:
 1. Criação da tabela `instrutores`.
 2. Criação da tabela `alunos`.
 3. Criação da tabela `usuarios`.
-4. Populando as tabelas `Instrutores`, `Alunos` e `Usuarios` com dados iniciais de exemplo.
+4. Criação da tabela `instrucoes` (agendamento).
+5. Populando as tabelas `Instrutores`, `Alunos`, `Usuarios` e `Agendamento` com dados iniciais de exemplo.
