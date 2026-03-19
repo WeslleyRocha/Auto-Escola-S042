@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class AppComponent {
   title = 'auto-escola-frontend';
 
   // Controle do modal de login

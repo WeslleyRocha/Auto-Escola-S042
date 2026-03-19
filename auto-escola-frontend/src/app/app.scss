@@ -1,0 +1,101 @@
+/* Overlay escuro para o modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+  z-index: 1050; /* Fica acima da navbar (1030) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Animação de entrada do fundo */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Card de Login */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  animation: slideUp 0.4s ease-out;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+/* Animação de subida do card */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Círculo do ícone */
+.icon-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo do botão de fechar */
+.btn-close {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* Inputs focados */
+.form-control:focus {
+  box-shadow: none; /* Remove a borda azul padrão do bootstrap */
+}
+.input-group:focus-within {
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
+
+/* Botão de Entrar */
+.login-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4) !important;
+  }
+}
+
+/* Estilos do Footer */
+.footer-link {
+  transition: color 0.3s ease;
+  &:hover {
+    color: #ffc107 !important; /* text-warning bootstrap */
+  }
+}
+
+.social-icon {
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: inline-block;
+  &:hover {
+    transform: translateY(-3px) scale(1.1);
+    color: #ffc107 !important;
+  }
+}
+
+/* Layout flex para empurrar o footer pra baixo (Sticky Footer) */
+.d-flex.flex-column.min-vh-100 {
+  min-height: 100vh;
+}

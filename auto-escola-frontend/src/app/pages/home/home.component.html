@@ -1,0 +1,97 @@
+<!-- Hero Section / Banner -->
+<section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+  <div class="hero-content">
+    <h1 class="display-3 fw-bold mb-4 animate-up">Auto Escola S042</h1>
+    <p class="lead mb-5 animate-up delay-1">O caminho mais rápido e seguro para a sua habilitação.</p>
+    <button class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold animate-up delay-2 shadow-sm" style="transition: all 0.3s;">
+      Comece Agora
+    </button>
+  </div>
+</section>
+
+<!-- Informações / Diferenciais -->
+<section class="info-section py-5 bg-light">
+  <div class="container my-5">
+    <div class="row text-center g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm feature-card p-4">
+          <div class="card-body">
+            <div class="icon-circle bg-primary text-white mx-auto mb-3">
+              <i class="bi bi-car-front fs-2"></i>
+            </div>
+            <h5 class="fw-bold">Frota Atualizada</h5>
+            <p class="text-muted">Carros e motos novos, com direção hidráulica e ar condicionado para o seu conforto e segurança.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm feature-card p-4">
+          <div class="card-body">
+            <div class="icon-circle bg-success text-white mx-auto mb-3">
+              <i class="bi bi-person-check fs-2"></i>
+            </div>
+            <h5 class="fw-bold">Instrutores Qualificados</h5>
+            <p class="text-muted">Equipe paciente, experiente e credenciada pelo Detran para garantir a melhor didática.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm feature-card p-4">
+          <div class="card-body">
+            <div class="icon-circle bg-warning text-dark mx-auto mb-3">
+              <i class="bi bi-calendar-check fs-2"></i>
+            </div>
+            <h5 class="fw-bold">Flexibilidade</h5>
+            <p class="text-muted">Agende suas aulas práticas e teóricas nos horários que melhor se encaixam na sua rotina.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Agenda Disponível Mock -->
+<section class="agenda-section py-5">
+  <div class="container my-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-dark">Próximas Agendas Disponíveis</h2>
+      <p class="text-muted">Confira alguns dos próximos horários livres e reserve o seu espaço.</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="table-responsive shadow-sm rounded">
+          <table class="table table-hover table-borderless align-middle text-center mb-0 bg-white">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="py-3 rounded-start">Data</th>
+                <th class="py-3">Horário</th>
+                <th class="py-3">Tipo</th>
+                <th class="py-3">Instrutor</th>
+                <th class="py-3 rounded-end">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (agenda of agendamentosDisponiveis; track agenda.data) {
+                <tr class="border-bottom">
+                  <td class="fw-bold text-secondary">{{ agenda.data }}</td>
+                  <td><span class="badge bg-light text-dark border px-3 py-2">{{ agenda.hora }}</span></td>
+                  <td>
+                    <span class="badge"
+                          [ngClass]="{'bg-primary': agenda.tipo === 'Carro', 'bg-warning text-dark': agenda.tipo === 'Moto', 'bg-danger': agenda.tipo === 'Caminhão'}">
+                      {{ agenda.tipo }}
+                    </span>
+                  </td>
+                  <td class="text-muted">{{ agenda.instrutor }}</td>
+                  <td>
+                    <button class="btn btn-outline-primary btn-sm rounded-pill px-4">Agendar</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

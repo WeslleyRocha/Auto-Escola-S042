@@ -1,0 +1,60 @@
+.hero-section {
+  /* Substitua a URL por uma imagem de alta qualidade que você goste (unsplash/pexels) */
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+  background-size: cover;
+  min-height: 70vh;
+  margin-top: -3rem; /* Para compensar o margin top do container router-outlet */
+  padding-top: 3rem;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.btn-warning:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(255, 193, 7, 0.4) !important;
+}
+
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 15px;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+  }
+}
+
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -20px; /* Para dar aquele efeito de ícone saindo do card */
+}
+
+/* Animações simples para a entrada do texto do banner */
+.animate-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s forwards ease-out;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilo para a tabela ficar arredondada */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}

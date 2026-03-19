@@ -1,33 +1,176 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#">
-      <i class="bi bi-car-front-fill me-2"></i> Auto Escola S042
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto fw-medium">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Alunos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Instrutores</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Agendamentos</a>
-        </li>
-        <li class="nav-item ms-lg-3">
-          <button class="btn btn-warning px-4 rounded-pill fw-bold text-dark">Login</button>
-        </li>
-      </ul>
+<div class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="bi bi-car-front-fill me-2"></i> Auto Escola S042
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto fw-medium align-items-center">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Alunos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Instrutores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Agendamentos</a>
+          </li>
+
+          <!-- Botão de Login ou Info do Usuário -->
+          <ng-container *ngIf="!isLoggedIn; else loggedInMenu">
+            <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+              <button class="btn btn-warning px-4 rounded-pill fw-bold text-dark" (click)="openLoginModal()">Login</button>
+            </li>
+          </ng-container>
+
+          <!-- Template quando o usuário está logado -->
+          <ng-template #loggedInMenu>
+            <li class="nav-item ms-lg-3 mt-2 mt-lg-0 d-flex align-items-center">
+              <span class="text-white fw-bold me-3">
+                <i class="bi bi-person-circle me-1"></i> Olá, {{ userName }}!
+              </span>
+              <button class="btn btn-outline-light btn-sm rounded-pill px-3" (click)="logout()">Sair</button>
+            </li>
+          </ng-template>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <main class="flex-grow-1 mt-5 pt-3">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Rodapé (Footer) -->
+  <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
+    <div class="container">
+      <div class="row">
+        <!-- Sobre -->
+        <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mb-4">
+          <h5 class="text-uppercase fw-bold text-warning mb-4">
+            <i class="bi bi-car-front-fill me-2"></i>Auto Escola S042
+          </h5>
+          <p class="text-light opacity-75">
+            O caminho mais rápido e seguro para a sua habilitação. Formando motoristas com responsabilidade e excelência desde 2010.
+          </p>
+        </div>
+
+        <!-- Links Rápidos -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h5 class="text-uppercase fw-bold text-warning mb-4">Links Rápidos</h5>
+          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Home</a></p>
+          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Alunos</a></p>
+          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Instrutores</a></p>
+          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Agendamentos</a></p>
+        </div>
+
+        <!-- Contato -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <h5 class="text-uppercase fw-bold text-warning mb-4">Contato</h5>
+          <p class="text-light opacity-75"><i class="bi bi-geo-alt-fill me-3 text-warning"></i> Av. das Nações, 1234 - São Paulo, SP</p>
+          <p class="text-light opacity-75"><i class="bi bi-envelope-fill me-3 text-warning"></i> contato@autoescolas042.com.br</p>
+          <p class="text-light opacity-75"><i class="bi bi-telephone-fill me-3 text-warning"></i> (11) 4002-8922</p>
+          <p class="text-light opacity-75"><i class="bi bi-whatsapp me-3 text-warning"></i> (11) 99888-7777</p>
+        </div>
+      </div>
+
+      <hr class="mb-4 bg-light border-light opacity-25">
+
+      <!-- Redes Sociais e Copyright -->
+      <div class="row align-items-center">
+        <div class="col-md-7 col-lg-8">
+          <p class="text-light opacity-75 mb-0">
+            © 2026 Todos os direitos reservados: <span class="fw-bold text-warning">Auto Escola S042</span>
+            <br>
+            <small class="text-light opacity-50">Desenvolvido por <a href="https://github.com/WeslleyRocha" target="_blank" class="text-warning text-decoration-none fw-bold">Weslley Rocha</a></small>
+          </p>
+        </div>
+
+        <div class="col-md-5 col-lg-4">
+          <div class="text-center text-md-end mt-3 mt-md-0">
+            <ul class="list-unstyled list-inline mb-0">
+              <li class="list-inline-item">
+                <a href="#" class="btn-floating btn-sm text-white fs-4"><i class="bi bi-facebook social-icon"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="btn-floating btn-sm text-white fs-4"><i class="bi bi-instagram social-icon"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="btn-floating btn-sm text-white fs-4"><i class="bi bi-twitter social-icon"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="btn-floating btn-sm text-white fs-4"><i class="bi bi-youtube social-icon"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Modal de Login -->
+<div class="modal-overlay" *ngIf="showLoginModal">
+  <div class="card border-0 shadow-lg login-card">
+
+    <div class="card-header bg-white border-0 text-end pt-3 pe-3 pb-0">
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeLoginModal()"></button>
+    </div>
+
+    <div class="card-body px-5 pb-5 pt-2">
+      <div class="text-center mb-4">
+        <div class="icon-circle bg-primary text-white mx-auto mb-3">
+          <i class="bi bi-person-lock fs-2"></i>
+        </div>
+        <h4 class="fw-bold">Acesse sua conta</h4>
+        <p class="text-muted small">Insira suas credenciais para continuar.</p>
+      </div>
+
+      <form (ngSubmit)="onSubmitLogin()">
+        <div class="mb-3">
+          <label for="loginInput" class="form-label text-muted small fw-bold">Login</label>
+          <div class="input-group text-bg-light rounded p-1 border">
+            <span class="input-group-text bg-transparent border-0 text-primary">
+              <i class="bi bi-envelope"></i>
+            </span>
+            <input type="text" class="form-control border-0 bg-transparent" id="loginInput"
+                   placeholder="Digite seu login" required [(ngModel)]="loginData.login" name="login">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="senhaInput" class="form-label text-muted small fw-bold">Senha</label>
+          <div class="input-group text-bg-light rounded p-1 border">
+            <span class="input-group-text bg-transparent border-0 text-primary">
+              <i class="bi bi-key"></i>
+            </span>
+            <input type="password" class="form-control border-0 bg-transparent" id="senhaInput"
+                   placeholder="Sua senha secreta" required [(ngModel)]="loginData.senha" name="senha">
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="lembrarSenha"
+                   [(ngModel)]="loginData.lembrar" name="lembrar">
+            <label class="form-check-label text-muted small" for="lembrarSenha">Lembrar senha</label>
+          </div>
+          <a href="#" class="text-decoration-none small text-primary fw-bold">Esqueci minha senha</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold text-white shadow-sm login-btn">
+          Entrar
+        </button>
+      </form>
     </div>
   </div>
-</nav>
-
-<div class="mt-5 pt-3">
-  <router-outlet></router-outlet>
 </div>
