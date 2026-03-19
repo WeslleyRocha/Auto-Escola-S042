@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'https://localhost:8080/login';
+  private readonly apiUrl = 'http://localhost:8080/login';
   private readonly http = inject(HttpClient);
 
   login(dados: any): Observable<any> {
@@ -14,8 +14,7 @@ export class AuthService {
       tap(response => {
         // No Java, o DTO DadosTokenJWT retorna { "token": "..." } ou algo parecido.
         // Se retornar apenas a string pura ou outro campo, ajustamos aqui.
-        let tokenJwt = response.token || response.tokenJWT || response;
-
+        let tokenJwt = response.tokenJWT;
         if (tokenJwt) {
           localStorage.setItem('auth_token', tokenJwt);
           localStorage.setItem('usuario_logado', dados.login);
