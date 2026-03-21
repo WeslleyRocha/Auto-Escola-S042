@@ -12,22 +12,55 @@
         <ul class="navbar-nav ms-auto fw-medium align-items-center">
 
           <!-- Botão de Login ou Info do Usuário -->
-          <ng-container *ngIf="!isLoggedIn; else loggedInMenu">
+          @if (!isLoggedIn) {
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
               <button class="btn btn-warning px-4 rounded-pill fw-bold text-dark" (click)="openLoginModal()">Login</button>
             </li>
-          </ng-container>
+          } @else {
+            <!-- Dropdown de Cadastros -->
+            <li class="nav-item dropdown ms-lg-3 mt-2 mt-lg-0">
+              <button class="btn btn-success btn-sm rounded-pill px-3 dropdown-toggle fw-bold"
+                      id="navbarDropdownCadastro" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-plus-circle me-1"></i> Cadastrar
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2" aria-labelledby="navbarDropdownCadastro">
+                <!-- Visível apenas para Admin -->
+                @if (userName === 'admin') {
+                  <li><a class="dropdown-item py-2 text-success" href="#" (click)="openCadastroAlunoModal($event)"><i class="bi bi-person me-2"></i>Aluno</a></li>
+                  <li><a class="dropdown-item py-2 text-purple" href="#" style="color: #6f42c1;" (click)="openCadastroInstrutorModal($event)"><i class="bi bi-person-badge me-2"></i>Instrutor (Professor)</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                }
+                <!-- Visível para todos logados -->
+                <li><a class="dropdown-item py-2 text-warning" href="#" (click)="openAgendamentoModal($event)"><i class="bi bi-calendar-plus me-2 text-warning"></i>Instrução (Aula)</a></li>
+              </ul>
+            </li>
 
-          <!-- Template quando o usuário está logado -->
-          <ng-template #loggedInMenu>
+            <!-- Dropdown de Consultas -->
+            <li class="nav-item dropdown ms-lg-2 mt-2 mt-lg-0">
+              <button class="btn btn-info btn-sm rounded-pill px-3 dropdown-toggle fw-bold text-white"
+                      id="navbarDropdownConsulta" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #17a2b8; border-color: #17a2b8;">
+                <i class="bi bi-search me-1"></i> Consultar
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2" aria-labelledby="navbarDropdownConsulta">
+                <!-- Visível apenas para Admin -->
+                @if (userName === 'admin') {
+                  <li><a class="dropdown-item py-2 text-success" href="#" (click)="openConsultaAlunoModal($event)"><i class="bi bi-person-lines-fill me-2"></i>Consultar Aluno</a></li>
+                  <li><a class="dropdown-item py-2 text-purple" href="#" style="color: #6f42c1;" (click)="openConsultaInstrutorModal($event)"><i class="bi bi-person-video2 me-2"></i>Consultar Instrutor</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                }
+                <!-- Visível para todos logados -->
+                <li><a class="dropdown-item py-2 text-warning" href="#" (click)="openConsultaAulaModal($event)"><i class="bi bi-calendar2-week me-2 text-warning"></i>Consultar Aula</a></li>
+              </ul>
+            </li>
+
+            <!-- Saudação e Logout -->
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0 d-flex align-items-center">
               <span class="text-white fw-bold me-3">
                 <i class="bi bi-person-circle me-1"></i> Olá, {{ userName }}!
               </span>
               <button class="btn btn-outline-light btn-sm rounded-pill px-3" (click)="logout()">Sair</button>
             </li>
-          </ng-template>
-
+          }
         </ul>
       </div>
     </div>
@@ -50,15 +83,6 @@
           <p class="text-light opacity-75">
             O caminho mais rápido e seguro para a sua habilitação. Formando motoristas com responsabilidade e excelência desde 2010.
           </p>
-        </div>
-
-        <!-- Links Rápidos -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <h5 class="text-uppercase fw-bold text-warning mb-4">Links Rápidos</h5>
-          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Home</a></p>
-          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Alunos</a></p>
-          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Instrutores</a></p>
-          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Agendamentos</a></p>
         </div>
 
         <!-- Contato -->
@@ -107,7 +131,8 @@
 </div>
 
 <!-- Modal de Login -->
-<div class="modal-overlay" *ngIf="showLoginModal">
+@if (showLoginModal) {
+<div class="modal-overlay">
   <div class="card border-0 shadow-lg login-card">
 
     <div class="card-header bg-white border-0 text-end pt-3 pe-3 pb-0">
@@ -123,11 +148,13 @@
         <p class="text-muted small">Insira suas credenciais para continuar.</p>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger p-2 text-center small mb-3">
+      @if (errorMessage) {
+      <div class="alert alert-danger p-2 text-center small mb-3">
         {{ errorMessage }}
       </div>
+      }
 
-      <form (ngSubmit)="onSubmitLogin()">
+      <form (ngSubmit)="onSubmitLogin($event)">
         <div class="mb-3">
           <label for="loginInput" class="form-label text-muted small fw-bold">Login</label>
           <div class="input-group text-bg-light rounded p-1 border">
@@ -150,12 +177,7 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="lembrarSenha"
-                   [(ngModel)]="loginData.lembrar" name="lembrar">
-            <label class="form-check-label text-muted small" for="lembrarSenha">Lembrar senha</label>
-          </div>
+        <div class="d-flex justify-content-end mb-4">
           <a href="#" class="text-decoration-none small text-primary fw-bold">Esqueci minha senha</a>
         </div>
 
@@ -166,3 +188,502 @@
     </div>
   </div>
 </div>
+}
+
+<!-- Modal de Cadastro de Aluno -->
+@if (showCadastroAlunoModal) {
+<div class="modal-overlay" style="overflow-y: auto; padding: 2rem 0;">
+  <div class="card border-0 shadow-lg login-card" style="max-width: 600px; margin: auto;">
+
+    <div class="card-header bg-white border-0 text-end pt-3 pe-3 pb-0">
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeCadastroAlunoModal()"></button>
+    </div>
+
+    <div class="card-body px-5 pb-5 pt-2">
+      <div class="text-center mb-4">
+        <!-- Ícone Verde -->
+        <div class="icon-circle bg-success text-white mx-auto mb-3">
+          <i class="bi bi-person-plus-fill fs-2"></i>
+        </div>
+        <h4 class="fw-bold text-success">Novo Aluno</h4>
+        <p class="text-muted small">Preencha os dados abaixo para cadastrar um aluno.</p>
+      </div>
+
+      @if (cadastroMessage) {
+      <div class="alert p-2 text-center small mb-3"
+           [ngClass]="cadastroSucesso ? 'alert-success' : 'alert-danger'">
+        {{ cadastroMessage }}
+      </div>
+      }
+
+      <form (ngSubmit)="onSubmitCadastroAluno($event)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">Nome *</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-success" style="--bs-focus-ring-color: rgba(25,135,84,.25)">
+              <span class="input-group-text bg-transparent border-0 text-success"><i class="bi bi-person"></i></span>
+              <input type="text" class="form-control border-0 bg-transparent" placeholder="Nome completo" required [(ngModel)]="cadastroAlunoData.nome" name="nome">
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">E-mail</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-success" style="--bs-focus-ring-color: rgba(25,135,84,.25)">
+              <span class="input-group-text bg-transparent border-0 text-success"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control border-0 bg-transparent" placeholder="aluno@email.com" [(ngModel)]="cadastroAlunoData.email" name="email">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">CPF *</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-success" style="--bs-focus-ring-color: rgba(25,135,84,.25)">
+              <span class="input-group-text bg-transparent border-0 text-success"><i class="bi bi-card-text"></i></span>
+              <input type="text" class="form-control border-0 bg-transparent" placeholder="Somente números" required [(ngModel)]="cadastroAlunoData.cpf" name="cpf">
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">Telefone</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-success" style="--bs-focus-ring-color: rgba(25,135,84,.25)">
+              <span class="input-group-text bg-transparent border-0 text-success"><i class="bi bi-telephone"></i></span>
+              <input type="text" class="form-control border-0 bg-transparent" placeholder="(11) 99999-9999" [(ngModel)]="cadastroAlunoData.telefone" name="telefone">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">Especialidade *</label>
+          <div class="input-group text-bg-light rounded p-1 border focus-ring-success" style="--bs-focus-ring-color: rgba(25,135,84,.25)">
+            <span class="input-group-text bg-transparent border-0 text-success"><i class="bi bi-car-front"></i></span>
+            <select class="form-control border-0 bg-transparent text-secondary" required [(ngModel)]="cadastroAlunoData.especialidade" name="especialidade">
+              <option value="" disabled selected>Selecione...</option>
+              <option value="CARRO">CARRO</option>
+              <option value="MOTO">MOTO</option>
+              <option value="CAMINHAO">CAMINHÃO</option>
+              <option value="VANS">VANS</option>
+            </select>
+          </div>
+        </div>
+
+        <h6 class="fw-bold mt-4 mb-3 text-success border-bottom pb-2">Endereço</h6>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label text-muted small fw-bold">CEP</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="00000-000" [(ngModel)]="cadastroAlunoData.endereco.cep" name="cep">
+          </div>
+          <div class="col-md-8 mb-3">
+            <label class="form-label text-muted small fw-bold">Logradouro</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="Rua das Flores" [(ngModel)]="cadastroAlunoData.endereco.logradouro" name="logradouro">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label text-muted small fw-bold">Número</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="123" [(ngModel)]="cadastroAlunoData.endereco.numero" name="numero">
+          </div>
+          <div class="col-md-8 mb-3">
+            <label class="form-label text-muted small fw-bold">Complemento</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="Apto 1" [(ngModel)]="cadastroAlunoData.endereco.complemento" name="complemento">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5 mb-4">
+            <label class="form-label text-muted small fw-bold">Bairro</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="Centro" [(ngModel)]="cadastroAlunoData.endereco.bairro" name="bairro">
+          </div>
+          <div class="col-md-5 mb-4">
+            <label class="form-label text-muted small fw-bold">Cidade</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="São Paulo" [(ngModel)]="cadastroAlunoData.endereco.cidade" name="cidade">
+          </div>
+          <div class="col-md-2 mb-4">
+            <label class="form-label text-muted small fw-bold">UF</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-success placeholder-light" placeholder="SP" [(ngModel)]="cadastroAlunoData.endereco.uf" name="uf">
+          </div>
+        </div>
+
+        <!-- Botão Verde para Alunos -->
+        <button type="submit" class="btn btn-success w-100 rounded-pill py-2 fw-bold text-white shadow-sm login-btn">
+          Cadastrar Aluno
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Modal de Cadastro de Instrutor -->
+@if (showCadastroInstrutorModal) {
+<div class="modal-overlay" style="overflow-y: auto; padding: 2rem 0;">
+  <div class="card border-0 shadow-lg login-card" style="max-width: 600px; margin: auto;">
+
+    <div class="card-header bg-white border-0 text-end pt-3 pe-3 pb-0">
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeCadastroInstrutorModal()"></button>
+    </div>
+
+    <div class="card-body px-5 pb-5 pt-2">
+      <div class="text-center mb-4">
+        <!-- Ícone Roxo para Instrutor -->
+        <div class="icon-circle text-white mx-auto mb-3" style="background-color: #6f42c1;">
+          <i class="bi bi-person-badge fs-2"></i>
+        </div>
+        <h4 class="fw-bold" style="color: #6f42c1;">Novo Instrutor</h4>
+        <p class="text-muted small">Preencha os dados abaixo para cadastrar um professor.</p>
+      </div>
+
+      @if (cadastroMessage) {
+      <div class="alert p-2 text-center small mb-3"
+           [ngClass]="cadastroSucesso ? 'alert-success' : 'alert-danger'">
+        {{ cadastroMessage }}
+      </div>
+      }
+
+      <form (ngSubmit)="onSubmitCadastroInstrutor($event)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">Nome *</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-purple">
+              <span class="input-group-text bg-transparent border-0" style="color: #6f42c1;"><i class="bi bi-person"></i></span>
+              <input type="text" class="form-control border-0 bg-transparent placeholder-light" placeholder="Nome completo" required [(ngModel)]="cadastroInstrutorData.nome" name="nome">
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">E-mail</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-purple">
+              <span class="input-group-text bg-transparent border-0" style="color: #6f42c1;"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control border-0 bg-transparent placeholder-light" placeholder="professor@email.com" [(ngModel)]="cadastroInstrutorData.email" name="email">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">CNH *</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-purple">
+              <span class="input-group-text bg-transparent border-0" style="color: #6f42c1;"><i class="bi bi-card-heading"></i></span>
+              <input type="text" class="form-control border-0 bg-transparent placeholder-light" placeholder="Somente números" required [(ngModel)]="cadastroInstrutorData.cnh" name="cnh">
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">Telefone</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-purple">
+              <span class="input-group-text bg-transparent border-0" style="color: #6f42c1;"><i class="bi bi-telephone"></i></span>
+              <input type="text" class="form-control border-0 bg-transparent placeholder-light" placeholder="(11) 99999-9999" [(ngModel)]="cadastroInstrutorData.telefone" name="telefone">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">Especialidade *</label>
+          <div class="input-group text-bg-light rounded p-1 border focus-ring-purple">
+            <span class="input-group-text bg-transparent border-0" style="color: #6f42c1;"><i class="bi bi-car-front"></i></span>
+            <select class="form-control border-0 bg-transparent text-secondary" required [(ngModel)]="cadastroInstrutorData.especialidade" name="especialidade">
+              <option value="" disabled selected>Selecione...</option>
+              <option value="CARRO">CARRO</option>
+              <option value="MOTO">MOTO</option>
+              <option value="CAMINHAO">CAMINHÃO</option>
+              <option value="VANS">VANS</option>
+            </select>
+          </div>
+        </div>
+
+        <h6 class="fw-bold mt-4 mb-3 border-bottom pb-2" style="color: #6f42c1;">Endereço</h6>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label text-muted small fw-bold">CEP</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="00000-000" [(ngModel)]="cadastroInstrutorData.endereco.cep" name="cep">
+          </div>
+          <div class="col-md-8 mb-3">
+            <label class="form-label text-muted small fw-bold">Logradouro</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="Rua das Flores" [(ngModel)]="cadastroInstrutorData.endereco.logradouro" name="logradouro">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label text-muted small fw-bold">Número</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="123" [(ngModel)]="cadastroInstrutorData.endereco.numero" name="numero">
+          </div>
+          <div class="col-md-8 mb-3">
+            <label class="form-label text-muted small fw-bold">Complemento</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="Apto 1" [(ngModel)]="cadastroInstrutorData.endereco.complemento" name="complemento">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5 mb-4">
+            <label class="form-label text-muted small fw-bold">Bairro</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="Centro" [(ngModel)]="cadastroInstrutorData.endereco.bairro" name="bairro">
+          </div>
+          <div class="col-md-5 mb-4">
+            <label class="form-label text-muted small fw-bold">Cidade</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="São Paulo" [(ngModel)]="cadastroInstrutorData.endereco.cidade" name="cidade">
+          </div>
+          <div class="col-md-2 mb-4">
+            <label class="form-label text-muted small fw-bold">UF</label>
+            <input type="text" class="form-control text-bg-light border focus-ring-purple placeholder-light" placeholder="SP" [(ngModel)]="cadastroInstrutorData.endereco.uf" name="uf">
+          </div>
+        </div>
+
+        <!-- Botão Roxo para Instrutores -->
+        <button type="submit" class="btn w-100 rounded-pill py-2 fw-bold text-white shadow-sm login-btn" style="background-color: #6f42c1; border-color: #6f42c1;">
+          Cadastrar Instrutor
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Modal de Agendamento -->
+@if (showAgendamentoModal) {
+<div class="modal-overlay" style="overflow-y: auto; padding: 2rem 0;">
+  <div class="card border-0 shadow-lg login-card" style="max-width: 500px; margin: auto;">
+
+    <div class="card-header bg-white border-0 text-end pt-3 pe-3 pb-0">
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeAgendamentoModal()"></button>
+    </div>
+
+    <div class="card-body px-5 pb-5 pt-2">
+      <div class="text-center mb-4">
+        <!-- Ícone Amarelo para Agendamento -->
+        <div class="icon-circle text-dark mx-auto mb-3" style="background-color: #ffc107;">
+          <i class="bi bi-calendar-check fs-2"></i>
+        </div>
+        <h4 class="fw-bold text-warning" style="color: #e0a800 !important;">Nova Instrução</h4>
+        <p class="text-muted small">Agende uma aula prática ou teórica.</p>
+      </div>
+
+      @if (cadastroMessage) {
+      <div class="alert p-2 text-center small mb-3"
+           [ngClass]="cadastroSucesso ? 'alert-success' : 'alert-danger'">
+        {{ cadastroMessage }}
+      </div>
+      }
+
+      <form (ngSubmit)="onSubmitAgendamento($event)">
+
+        <!-- Aluno -->
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">Selecione o Aluno *</label>
+          <div class="input-group text-bg-light rounded p-1 border focus-ring-warning">
+            <span class="input-group-text bg-transparent border-0 text-warning" style="color: #e0a800 !important;"><i class="bi bi-person"></i></span>
+            <select class="form-control border-0 bg-transparent text-secondary" required [(ngModel)]="agendamentoData.idAluno" name="idAluno">
+              <option value="null" disabled selected>Selecione um aluno...</option>
+              @for (aluno of listaAlunos; track aluno.id) {
+                <option [value]="aluno.id">{{ aluno.nome }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Instrutor e Especialidade -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">Instrutor</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-warning">
+              <span class="input-group-text bg-transparent border-0 text-warning" style="color: #e0a800 !important;"><i class="bi bi-person-badge"></i></span>
+              <select class="form-control border-0 bg-transparent text-secondary" [(ngModel)]="agendamentoData.idInstrutor" (change)="onDataOuInstrutorChange()" name="idInstrutor">
+                <option value="null" selected>Qualquer / Aleatório</option>
+                @for (instrutor of listaInstrutores; track instrutor.id) {
+                  <option [value]="instrutor.id">{{ instrutor.nome }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-muted small fw-bold">Especialidade</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-warning">
+              <span class="input-group-text bg-transparent border-0 text-warning" style="color: #e0a800 !important;"><i class="bi bi-car-front"></i></span>
+              <select class="form-control border-0 bg-transparent text-secondary" [(ngModel)]="agendamentoData.especialidade" name="especialidade">
+                <option value="" disabled selected>Opcional...</option>
+                <option value="CARRO">CARRO</option>
+                <option value="MOTO">MOTO</option>
+                <option value="CAMINHAO">CAMINHÃO</option>
+                <option value="VANS">VANS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data e Hora separadas -->
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <label class="form-label text-muted small fw-bold">Data da Aula *</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-warning">
+              <span class="input-group-text bg-transparent border-0 text-warning" style="color: #e0a800 !important;"><i class="bi bi-calendar"></i></span>
+              <input type="date" class="form-control border-0 bg-transparent text-secondary" required [(ngModel)]="agendamentoData.dataForm" (change)="onDataOuInstrutorChange()" name="dataForm">
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-4">
+            <label class="form-label text-muted small fw-bold">Horário (8h às 20h) *</label>
+            <div class="input-group text-bg-light rounded p-1 border focus-ring-warning">
+              <span class="input-group-text bg-transparent border-0 text-warning" style="color: #e0a800 !important;"><i class="bi bi-clock"></i></span>
+              <select class="form-control border-0 bg-transparent text-secondary" required [(ngModel)]="agendamentoData.horaForm" name="horaForm">
+                <option value="" disabled selected>Escolha o horário</option>
+                @for (hr of horariosDisponiveis; track hr) {
+                  <option [value]="hr">{{ hr }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão Amarelo para Agendamentos -->
+        <button type="submit" class="btn btn-warning w-100 rounded-pill py-2 fw-bold text-dark shadow-sm login-btn">
+          Agendar Aula
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Modal de Consulta de Alunos -->
+@if (showConsultaAlunoModal) {
+<div class="modal-overlay" style="overflow-y: auto; padding: 2rem 0;">
+  <div class="card border-0 shadow-lg login-card" style="max-width: 800px; margin: auto;">
+
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3 pe-4 ps-4 pb-0">
+      <h5 class="fw-bold text-success mb-0"><i class="bi bi-list-ul me-2"></i> Lista de Alunos</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeConsultaAlunoModal()"></button>
+    </div>
+
+    <div class="card-body px-4 pb-4 pt-3 text-start">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 border shadow-sm rounded overflow-hidden">
+          <thead class="bg-success text-white">
+            <tr>
+              <th class="py-3 px-3 bg-success text-white text-center">ID</th>
+              <th class="py-3 bg-success text-white">Nome</th>
+              <th class="py-3 bg-success text-white">E-mail</th>
+              <th class="py-3 bg-success text-white">CPF</th>
+              <th class="py-3 bg-success text-white">Telefone</th>
+              <th class="py-3 bg-success text-white text-center">Especialidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (aluno of listaAlunos; track aluno.id) {
+              <tr>
+                <td class="fw-bold text-secondary text-center px-3">{{ aluno.id }}</td>
+                <td class="fw-medium">{{ aluno.nome }}</td>
+                <td class="text-muted small">{{ aluno.email }}</td>
+                <td class="text-muted small">{{ aluno.cpf }}</td>
+                <td class="text-muted small">{{ aluno.telefone || 'N/A' }}</td>
+                <td class="text-center"><span class="badge bg-success rounded-pill px-3 py-2">{{ aluno.especialidade }}</span></td>
+              </tr>
+            }
+            @if (listaAlunos.length === 0) {
+              <tr>
+                <td colspan="6" class="text-muted text-center py-4">Nenhum aluno encontrado.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Modal de Consulta de Instrutores -->
+@if (showConsultaInstrutorModal) {
+<div class="modal-overlay" style="overflow-y: auto; padding: 2rem 0;">
+  <div class="card border-0 shadow-lg login-card" style="max-width: 900px; margin: auto;">
+
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3 pe-4 ps-4 pb-0">
+      <h5 class="fw-bold mb-0" style="color: #6f42c1;"><i class="bi bi-list-ul me-2"></i> Lista de Instrutores</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeConsultaInstrutorModal()"></button>
+    </div>
+
+    <div class="card-body px-4 pb-4 pt-3 text-start">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 border shadow-sm rounded overflow-hidden">
+          <thead>
+            <tr>
+              <th class="py-3 px-3 text-white text-center" style="background-color: #6f42c1;">ID</th>
+              <th class="py-3 text-white" style="background-color: #6f42c1;">Nome</th>
+              <th class="py-3 text-white" style="background-color: #6f42c1;">E-mail</th>
+              <th class="py-3 text-white" style="background-color: #6f42c1;">CNH</th>
+              <th class="py-3 text-white" style="background-color: #6f42c1;">Telefone</th>
+              <th class="py-3 text-white text-center" style="background-color: #6f42c1;">Especialidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (instrutor of listaInstrutores; track instrutor.id) {
+              <tr>
+                <td class="fw-bold text-secondary text-center px-3">{{ instrutor.id }}</td>
+                <td class="fw-medium">{{ instrutor.nome }}</td>
+                <td class="text-muted small">{{ instrutor.email }}</td>
+                <td class="text-muted small">{{ instrutor.cnh }}</td>
+                <td class="text-muted small">{{ instrutor.telefone || 'N/A' }}</td>
+                <td class="text-center"><span class="badge rounded-pill px-3 py-2" style="background-color: #6f42c1;">{{ instrutor.especialidade }}</span></td>
+              </tr>
+            }
+            @if (listaInstrutores.length === 0) {
+              <tr>
+                <td colspan="6" class="text-muted text-center py-4">Nenhum instrutor encontrado.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Modal de Consulta de Aulas -->
+@if (showConsultaAulaModal) {
+<div class="modal-overlay" style="overflow-y: auto; padding: 2rem 0;">
+  <div class="card border-0 shadow-lg login-card" style="max-width: 900px; margin: auto;">
+
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3 pe-4 ps-4 pb-0">
+      <h5 class="fw-bold text-warning mb-0" style="color: #e0a800 !important;"><i class="bi bi-calendar-week me-2"></i> Lista de Aulas Agendadas</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeConsultaAulaModal()"></button>
+    </div>
+
+    <div class="card-body px-4 pb-4 pt-3 text-start">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 border shadow-sm rounded overflow-hidden">
+          <thead class="bg-warning text-dark">
+            <tr>
+              <th class="py-3 px-3 bg-warning text-dark text-center">ID</th>
+              <th class="py-3 bg-warning text-dark">Data e Hora</th>
+              <th class="py-3 bg-warning text-dark">Aluno</th>
+              <th class="py-3 bg-warning text-dark">Instrutor</th>
+              <th class="py-3 bg-warning text-dark text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (aula of listaAulas; track aula.id) {
+              <tr>
+                <td class="fw-bold text-secondary text-center px-3">{{ aula.id }}</td>
+                <td class="fw-medium">{{ aula.data }}</td>
+                <td class="text-muted small">{{ aula.aluno ? aula.aluno.nome : 'N/A' }}</td>
+                <td class="text-muted small">{{ aula.instrutor ? aula.instrutor.nome : 'Pendente' }}</td>
+                <td class="text-center">
+                  @if (aula.ativo) {
+                    <span class="badge rounded-pill px-3 py-2 bg-success">Confirmada</span>
+                  } @else {
+                    <span class="badge rounded-pill px-3 py-2 bg-danger">Cancelada</span>
+                  }
+                </td>
+              </tr>
+            }
+            @if (listaAulas.length === 0) {
+              <tr>
+                <td colspan="5" class="text-muted text-center py-4">Nenhuma aula agendada.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+}
