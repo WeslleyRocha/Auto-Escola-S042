@@ -28,14 +28,14 @@
                 <!-- Secão Cadastros (Apenas Admin) -->
                 @if (userName === 'admin') {
                   <li><h6 class="dropdown-header text-primary fw-bold bg-light py-2"><i class="bi bi-plus-circle me-1"></i> Cadastros</h6></li>
-                  <li><a class="dropdown-item py-2 text-success fw-medium" href="#" (click)="openCadastroAlunoModal($event)"><i class="bi bi-person me-2"></i>Aluno (Usuário)</a></li>
-                  <li><a class="dropdown-item py-2 text-purple fw-medium" href="#" style="color: #6f42c1;" (click)="openCadastroInstrutorModal($event)"><i class="bi bi-person-badge me-2"></i>Instrutor (Professor)</a></li>
+                  <li><a class="dropdown-item py-2 text-success fw-medium" href="#" (click)="openCadastroAlunoModal($event)"><i class="bi bi-person me-2"></i>Aluno</a></li>
+                  <li><a class="dropdown-item py-2 text-purple fw-medium" href="#" style="color: #6f42c1;" (click)="openCadastroInstrutorModal($event)"><i class="bi bi-person-badge me-2"></i>Instrutor</a></li>
                   <li><hr class="dropdown-divider mb-0"></li>
                 }
 
                 <!-- Secão Agendamentos (Todos logados) -->
                 <li><h6 class="dropdown-header text-primary fw-bold bg-light py-2"><i class="bi bi-calendar-plus me-1"></i> Agendamentos</h6></li>
-                <li><a class="dropdown-item py-2 text-warning fw-medium text-dark" href="#" (click)="openAgendamentoModal($event)"><i class="bi bi-calendar-check me-2"></i>Nova Instrução (Aula)</a></li>
+                <li><a class="dropdown-item py-2 text-warning fw-medium text-dark" href="#" (click)="openAgendamentoModal($event)"><i class="bi bi-calendar-check me-2"></i>Agendar Aula</a></li>
                 <li><hr class="dropdown-divider mb-0"></li>
 
                 <!-- Secão Consultas -->
@@ -79,12 +79,6 @@
           <p class="text-light opacity-75">
             O caminho mais rápido e seguro para a sua habilitação. Formando motoristas com responsabilidade e excelência desde 2010.
           </p>
-        </div>
-
-        <!-- Links Rápidos -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <h5 class="text-uppercase fw-bold text-warning mb-4">Links Rápidos</h5>
-          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Home</a></p>
         </div>
 
         <!-- Contato -->
