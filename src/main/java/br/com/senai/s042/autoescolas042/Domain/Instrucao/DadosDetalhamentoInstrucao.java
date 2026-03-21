@@ -15,18 +15,29 @@ public record DadosDetalhamentoInstrucao(
         LocalDateTime data,
 
         Boolean ativo,
-        Motivo motivo) {
+        String motivo) {
 
     public DadosDetalhamentoInstrucao(Instrucao instrucao) {
 
         this(
                 instrucao.getId(),
-                instrucao.getAluno().getNome(),
-                instrucao.getInstrutor().getNome(),
-                instrucao.getInstrutor().getEspecialidade(),
+                instrucao.getAluno() != null ? instrucao.getAluno().getNome() : "N/A",
+                instrucao.getInstrutor() != null ? instrucao.getInstrutor().getNome() : "Pendente",
+                instrucao.getInstrutor() != null ? instrucao.getInstrutor().getEspecialidade() : null,
                 instrucao.getData(),
                 instrucao.getAtivo(),
-                instrucao.getMotivo()
+                formatarMotivo(instrucao.getMotivo())
         );
+    }
+
+    private static String formatarMotivo(Motivo motivo) {
+        if (motivo == null) {
+            return "-";
+        }
+        return switch (motivo) {
+            case INSTRUTOR_CANCELOU -> "Instrutor Cancelou";
+            case ALUNO_DESISTIU -> "Aluno Cancelou";
+            case OUTROS -> "Outros";
+        };
     }
 }

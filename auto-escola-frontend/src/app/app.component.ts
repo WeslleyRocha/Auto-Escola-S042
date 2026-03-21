@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
   listaAlunos: any[] = [];
   listaInstrutores: any[] = [];
   listaAulas: any[] = [];
+  listaAulasFiltrada: any[] = []; // Nova lista para os filtros
 
   // Lista de horas geradas dinamicamente
   horariosDisponiveis: string[] = [];
@@ -61,6 +62,12 @@ export class AppComponent implements OnInit {
     especialidade: '',
     dataForm: '', // Data separada do form (yyyy-MM-dd)
     horaForm: ''  // Hora separada do form
+  };
+
+  filtroAulas = {
+    instrutor: '',
+    data: '', // yyyy-MM-dd
+    motivo: ''
   };
 
   isLoggedIn = false;
@@ -439,20 +446,60 @@ export class AppComponent implements OnInit {
   openConsultaAulaModal(event: Event) {
     event.preventDefault();
     this.showConsultaAulaModal = true;
-
-    // Busca a lista de aulas/instruções
-    this.instrucaoService.listarInstrucoes().subscribe({
-      next: (res: any) => {
-        this.listaAulas = res.content || res;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => console.error('Erro ao buscar aulas para consulta:', err)
-    });
-    this.cdr.detectChanges();
+    this.limparFiltrosAulas(); // Busca tudo ao abrir
   }
 
   closeConsultaAulaModal() {
     this.showConsultaAulaModal = false;
+    this.cdr.detectChanges();
+  }
+
+  limparFiltrosAulas() {
+    this.filtroAulas = { instrutor: '', data: '', motivo: '' };
+    this.buscarListaAulas();
+  }
+
+  buscarListaAulas() {
+    this.instrucaoService.listarInstrucoes().subscribe({
+      next: (res: any) => {
+        this.listaAulas = res.content || res;
+        this.listaAulasFiltrada = [...this.listaAulas];
+        this.filtrarAulas(); // Aplica filtros caso o input onchange disparar antes
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('Erro ao buscar aulas para consulta:', err)
+    });
+  }
+
+  filtrarAulas() {
+    this.listaAulasFiltrada = this.listaAulas.filter(aula => {
+      let matchInstrutor = true;
+      let matchData = true;
+      let matchMotivo = true;
+
+      // Filtro por Nome do Instrutor
+      if (this.filtroAulas.instrutor) {
+        const nomeInstrutor = aula.instrutor ? String(aula.instrutor).toLowerCase() : 'pendente';
+        matchInstrutor = nomeInstrutor.includes(this.filtroAulas.instrutor.toLowerCase());
+      }
+
+      // Filtro por Data (aula.data vem do Java no formato: "dd/MM/yyyy - HH:mm")
+      if (this.filtroAulas.data) {
+        // Transforma o yyyy-MM-dd do input date em dd/MM/yyyy para checar
+        const [y, m, d] = this.filtroAulas.data.split('-');
+        const dataBusca = `${d}/${m}/${y}`;
+        matchData = String(aula.data).startsWith(dataBusca);
+      }
+
+      // Filtro por Motivo / Status
+      if (this.filtroAulas.motivo) {
+        const mt = aula.motivo ? String(aula.motivo) : '-';
+        matchMotivo = mt === this.filtroAulas.motivo;
+      }
+
+      return matchInstrutor && matchData && matchMotivo;
+    });
+
     this.cdr.detectChanges();
   }
 }
