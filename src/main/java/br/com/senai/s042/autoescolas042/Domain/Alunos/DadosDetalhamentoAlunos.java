@@ -7,6 +7,7 @@ public record DadosDetalhamentoAlunos(
         String nome,
         String email,
         String cpf,
+        String telefone,
         Boolean ativo,
         Especialidade especialidade) {
 
@@ -16,6 +17,7 @@ public record DadosDetalhamentoAlunos(
                 aluno.getNome(),
                 aluno.getEmail(),
                 aluno.getCpf(),
+                aluno.getTelefone(),
                 aluno.getAtivo(),
                 aluno.getEspecialidade()
         );
