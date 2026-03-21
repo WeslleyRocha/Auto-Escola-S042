@@ -17,39 +17,35 @@
               <button class="btn btn-warning px-4 rounded-pill fw-bold text-dark" (click)="openLoginModal()">Login</button>
             </li>
           } @else {
-            <!-- Dropdown de Cadastros -->
+            <!-- Dropdown Único Consolidado -->
             <li class="nav-item dropdown ms-lg-3 mt-2 mt-lg-0">
-              <button class="btn btn-success btn-sm rounded-pill px-3 dropdown-toggle fw-bold"
-                      id="navbarDropdownCadastro" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-plus-circle me-1"></i> Cadastrar
+              <button class="btn btn-light btn-sm rounded-pill px-3 dropdown-toggle fw-bold text-primary"
+                      id="navbarDropdownMenuGeral" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-grid-fill me-1"></i> Menu
               </button>
-              <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2" aria-labelledby="navbarDropdownCadastro">
-                <!-- Visível apenas para Admin -->
-                @if (userName === 'admin') {
-                  <li><a class="dropdown-item py-2 text-success" href="#" (click)="openCadastroAlunoModal($event)"><i class="bi bi-person me-2"></i>Aluno</a></li>
-                  <li><a class="dropdown-item py-2 text-purple" href="#" style="color: #6f42c1;" (click)="openCadastroInstrutorModal($event)"><i class="bi bi-person-badge me-2"></i>Instrutor (Professor)</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                }
-                <!-- Visível para todos logados -->
-                <li><a class="dropdown-item py-2 text-warning" href="#" (click)="openAgendamentoModal($event)"><i class="bi bi-calendar-plus me-2 text-warning"></i>Instrução (Aula)</a></li>
-              </ul>
-            </li>
+              <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2" aria-labelledby="navbarDropdownMenuGeral" style="min-width: 250px;">
 
-            <!-- Dropdown de Consultas -->
-            <li class="nav-item dropdown ms-lg-2 mt-2 mt-lg-0">
-              <button class="btn btn-info btn-sm rounded-pill px-3 dropdown-toggle fw-bold text-white"
-                      id="navbarDropdownConsulta" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #17a2b8; border-color: #17a2b8;">
-                <i class="bi bi-search me-1"></i> Consultar
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2" aria-labelledby="navbarDropdownConsulta">
-                <!-- Visível apenas para Admin -->
+                <!-- Secão Cadastros (Apenas Admin) -->
                 @if (userName === 'admin') {
-                  <li><a class="dropdown-item py-2 text-success" href="#" (click)="openConsultaAlunoModal($event)"><i class="bi bi-person-lines-fill me-2"></i>Consultar Aluno</a></li>
-                  <li><a class="dropdown-item py-2 text-purple" href="#" style="color: #6f42c1;" (click)="openConsultaInstrutorModal($event)"><i class="bi bi-person-video2 me-2"></i>Consultar Instrutor</a></li>
-                  <li><hr class="dropdown-divider"></li>
+                  <li><h6 class="dropdown-header text-primary fw-bold bg-light py-2"><i class="bi bi-plus-circle me-1"></i> Cadastros</h6></li>
+                  <li><a class="dropdown-item py-2 text-success fw-medium" href="#" (click)="openCadastroAlunoModal($event)"><i class="bi bi-person me-2"></i>Aluno (Usuário)</a></li>
+                  <li><a class="dropdown-item py-2 text-purple fw-medium" href="#" style="color: #6f42c1;" (click)="openCadastroInstrutorModal($event)"><i class="bi bi-person-badge me-2"></i>Instrutor (Professor)</a></li>
+                  <li><hr class="dropdown-divider mb-0"></li>
                 }
-                <!-- Visível para todos logados -->
-                <li><a class="dropdown-item py-2 text-warning" href="#" (click)="openConsultaAulaModal($event)"><i class="bi bi-calendar2-week me-2 text-warning"></i>Consultar Aula</a></li>
+
+                <!-- Secão Agendamentos (Todos logados) -->
+                <li><h6 class="dropdown-header text-primary fw-bold bg-light py-2"><i class="bi bi-calendar-plus me-1"></i> Agendamentos</h6></li>
+                <li><a class="dropdown-item py-2 text-warning fw-medium text-dark" href="#" (click)="openAgendamentoModal($event)"><i class="bi bi-calendar-check me-2"></i>Nova Instrução (Aula)</a></li>
+                <li><hr class="dropdown-divider mb-0"></li>
+
+                <!-- Secão Consultas -->
+                <li><h6 class="dropdown-header text-primary fw-bold bg-light py-2"><i class="bi bi-search me-1"></i> Consultas</h6></li>
+                @if (userName === 'admin') {
+                  <li><a class="dropdown-item py-2 text-success fw-medium" href="#" (click)="openConsultaAlunoModal($event)"><i class="bi bi-person-lines-fill me-2"></i>Alunos Cadastrados</a></li>
+                  <li><a class="dropdown-item py-2 text-purple fw-medium" href="#" style="color: #6f42c1;" (click)="openConsultaInstrutorModal($event)"><i class="bi bi-person-video2 me-2"></i>Instrutores Cadastrados</a></li>
+                }
+                <li><a class="dropdown-item py-2 text-warning fw-medium text-dark" href="#" (click)="openConsultaAulaModal($event)"><i class="bi bi-calendar2-week me-2"></i>Aulas Agendadas</a></li>
+
               </ul>
             </li>
 
@@ -83,6 +79,12 @@
           <p class="text-light opacity-75">
             O caminho mais rápido e seguro para a sua habilitação. Formando motoristas com responsabilidade e excelência desde 2010.
           </p>
+        </div>
+
+        <!-- Links Rápidos -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h5 class="text-uppercase fw-bold text-warning mb-4">Links Rápidos</h5>
+          <p><a href="#" class="text-light opacity-75 text-decoration-none footer-link">Home</a></p>
         </div>
 
         <!-- Contato -->
